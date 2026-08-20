@@ -1,0 +1,1633 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TKA Bahasa Indonesia — Advanced Practice</title>
+<meta name="description" content="Simulasi latihan TKA Bahasa Indonesia interaktif level mudah hingga HOTS.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07111f;--panel:#0d1b2e;--panel2:#11253d;--text:#eff6ff;--muted:#8da4bf;
+  --line:rgba(255,255,255,.10);--cyan:#5ee7f5;--violet:#9b8cff;--green:#4ade80;
+  --yellow:#facc15;--red:#fb7185;--shadow:0 24px 80px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;background:
+radial-gradient(circle at 10% 10%,rgba(94,231,245,.09),transparent 25%),
+radial-gradient(circle at 85% 15%,rgba(155,140,255,.12),transparent 28%),
+linear-gradient(180deg,#06101c 0%,#07111f 58%,#081424 100%);
+color:var(--text);font-family:Inter,system-ui,sans-serif;min-height:100vh}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background-image:
+linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:32px 32px;
+mask-image:linear-gradient(to bottom,black 0%,transparent 75%);z-index:-1}
+.container{width:min(1180px,calc(100% - 28px));margin:auto}
+.nav{position:sticky;top:0;z-index:30;background:rgba(6,16,28,.76);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.navin{height:72px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;font-family:"Plus Jakarta Sans";font-weight:800;letter-spacing:-.03em}
+.logoMark{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--cyan),var(--violet));display:grid;place-items:center;color:#07111f;box-shadow:0 8px 26px rgba(94,231,245,.2)}
+.logo small{display:block;color:var(--muted);font-family:Inter;font-size:11px;letter-spacing:.04em;margin-top:2px}
+.navbtn{background:transparent;border:1px solid var(--line);color:var(--text);padding:10px 14px;border-radius:12px;cursor:pointer}
+.hero{padding:60px 0 34px;display:grid;grid-template-columns:1.35fr .85fr;gap:24px;align-items:stretch}
+.heroCard,.statsCard,.panel,.resultCard{background:linear-gradient(180deg,rgba(17,37,61,.87),rgba(9,24,40,.88));border:1px solid var(--line);box-shadow:var(--shadow);border-radius:24px}
+.heroCard{padding:34px;position:relative;overflow:hidden}
+.heroCard:after{content:"";position:absolute;width:340px;height:340px;right:-120px;top:-130px;border-radius:50%;background:radial-gradient(circle,rgba(155,140,255,.24),transparent 62%);filter:blur(1px)}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.badge{padding:7px 10px;border:1px solid var(--line);border-radius:999px;color:#dbeafe;font-size:12px;background:rgba(255,255,255,.035)}
+h1{font-family:"Plus Jakarta Sans";font-size:clamp(34px,5vw,58px);line-height:1.02;letter-spacing:-.05em;margin:0 0 16px;max-width:780px}
+.gradient{background:linear-gradient(90deg,var(--cyan),#fff,var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:#b7c7db;line-height:1.7;max-width:760px;margin:0}
+.statsCard{padding:24px;display:flex;flex-direction:column;justify-content:space-between}
+.stat{padding:16px 0;border-bottom:1px solid var(--line)}.stat:last-child{border-bottom:none}
+.stat strong{font-family:"Plus Jakarta Sans";font-size:28px}.stat span{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+.controlBar{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 24px}
+.select,.actionBtn{border:1px solid var(--line);background:#0b1930;color:var(--text);border-radius:12px;padding:11px 13px}
+.actionBtn{cursor:pointer;font-weight:700;background:linear-gradient(135deg,rgba(94,231,245,.13),rgba(155,140,255,.13))}
+.actionBtn.primary{background:linear-gradient(135deg,#2ecbd6,#8a7cff);color:#07111f;border:none}
+.layout{display:grid;grid-template-columns:290px 1fr;gap:18px}
+.sidebar{position:sticky;top:90px;height:max-content;padding:18px}
+.sidebar h3{margin:0 0 10px;font-family:"Plus Jakarta Sans"}
+.secList{display:grid;gap:8px;max-height:68vh;overflow:auto;padding-right:4px}
+.secBtn{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:1px solid transparent;background:transparent;color:#b9c9dc;padding:10px;border-radius:12px;cursor:pointer}
+.secBtn:hover,.secBtn.active{background:rgba(255,255,255,.05);border-color:var(--line);color:#fff}
+.letter{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:rgba(94,231,245,.1);font-size:12px;font-weight:800;color:var(--cyan)}
+.progressWrap{margin:14px 0 6px}.progressTop{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}
+.progress{height:9px;background:#091425;border-radius:999px;overflow:hidden;border:1px solid var(--line);margin-top:7px}.progress > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--violet));transition:.35s}
+.quiz{padding:28px}
+.quizHead{display:flex;justify-content:space-between;gap:12px;align-items:start;margin-bottom:22px}
+.kicker{color:var(--cyan);font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.title{font-family:"Plus Jakarta Sans";font-size:26px;line-height:1.25;margin:7px 0}
+.meta{display:flex;gap:7px;flex-wrap:wrap}.meta span{font-size:11px;padding:6px 9px;border-radius:999px;border:1px solid var(--line);color:#b7c7db}
+.question{font-size:20px;line-height:1.68;color:#f7fbff;margin:18px 0 22px}
+.options{display:grid;gap:12px}
+.option{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);background:rgba(255,255,255,.025);padding:15px;border-radius:16px;cursor:pointer;transition:.2s}
+.option:hover{transform:translateY(-1px);background:rgba(255,255,255,.05)}
+.option input{margin-top:4px;accent-color:#7feef6;transform:scale(1.1)}
+.option strong{min-width:22px;color:var(--cyan)}
+.quizFoot{display:flex;justify-content:space-between;gap:10px;margin-top:24px}
+.tiny{font-size:12px;color:var(--muted);line-height:1.6}
+.results{display:none}
+.resultHero{padding:28px;margin-bottom:18px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center}
+.scoreNum{font-family:"Plus Jakarta Sans";font-size:64px;line-height:1}
+.scoreLabel{color:var(--muted);margin-top:4px}
+.grade{padding:10px 14px;border:1px solid var(--line);border-radius:999px;font-weight:800;display:inline-block;margin-top:12px}
+.resultGrid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.resultCard{padding:22px}
+.barRow{margin:13px 0}.barRowTop{display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px}.bar{height:8px;background:#091425;border:1px solid var(--line);border-radius:999px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--violet))}
+.reviewList{display:grid;gap:10px}.reviewItem{border:1px solid var(--line);border-radius:14px;padding:14px;background:rgba(255,255,255,.025)}
+.reviewItem.ok{border-left:3px solid var(--green)}.reviewItem.bad{border-left:3px solid var(--red)}
+.reviewQ{font-weight:700;line-height:1.5}.reviewA{font-size:13px;color:#b7c7db;margin-top:8px;line-height:1.6}
+.hidden{display:none !important}
+.footer{color:var(--muted);font-size:12px;text-align:center;padding:40px 0 70px}
+@media(max-width:900px){.hero{grid-template-columns:1fr}.layout{grid-template-columns:1fr}.sidebar{position:static}.secList{display:flex;overflow:auto;max-height:none}.secBtn{min-width:200px}.resultGrid{grid-template-columns:1fr}}
+@media(max-width:600px){.heroCard,.statsCard,.quiz,.sidebar,.resultCard{padding:18px}.question{font-size:18px}.resultHero{grid-template-columns:1fr}.navin{height:64px}.title{font-size:22px}}
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="container navin">
+    <div class="logo"><div class="logoMark">TKA</div><div>BAHASA INDONESIA<small>ADVANCED PRACTICE LAB</small></div></div>
+    <button class="navbtn" onclick="resetQuiz()">Reset</button>
+  </div>
+</header>
+
+<main class="container">
+<section class="hero">
+  <div class="heroCard">
+    <div class="badges"><span class="badge">17 Bagian</span><span class="badge">68 Soal</span><span class="badge">Mudah → HOTS</span><span class="badge">Pembahasan Otomatis</span></div>
+    <h1>Latihan TKA Bahasa Indonesia <span class="gradient">Level Lanjut.</span></h1>
+    <p>Rasakan simulasi seperti exam platform modern: pilih bagian, kerjakan soal pilihan ganda, lihat skor, cek soal yang salah, dan pelajari cara mendapatkan jawaban yang tepat.</p>
+  </div>
+  <div class="statsCard">
+    <div class="stat"><strong>17</strong><span>Topik A–Q</span></div>
+    <div class="stat"><strong>4</strong><span>Level per topik</span></div>
+    <div class="stat"><strong>100%</strong><span>Gratis & siap GitHub Pages</span></div>
+  </div>
+</section>
+
+<div class="controlBar">
+  <select id="levelFilter" class="select">
+    <option value="Semua">Semua level</option>
+    <option value="Mudah">Mudah</option><option value="Sedang">Sedang</option><option value="Sulit">Sulit</option><option value="HOTS">HOTS</option>
+  </select>
+  <select id="sectionFilter" class="select"></select>
+  <button class="actionBtn primary" onclick="startFiltered()">Mulai / Terapkan Filter</button>
+  <button class="actionBtn" onclick="showAll()">Semua Soal</button>
+</div>
+
+<section class="layout" id="quizArea">
+  <aside class="panel sidebar">
+    <h3>Peta Materi</h3>
+    <div class="tiny">Klik bagian untuk langsung melatih topik tertentu.</div>
+    <div class="progressWrap">
+      <div class="progressTop"><span>Progress</span><span id="progressText">0 / 68</span></div>
+      <div class="progress"><i id="progressBar"></i></div>
+    </div>
+    <div id="secList" class="secList"></div>
+  </aside>
+
+  <div class="panel quiz">
+    <div id="questionView">
+      <div class="quizHead">
+        <div>
+          <div class="kicker" id="questionKicker">A · Unsur Intrinsik</div>
+          <div class="title" id="questionTitle">Siap mulai?</div>
+          <div class="meta"><span id="qLevel">—</span><span id="qIndex">0 / 0</span><span id="qTopic">Pilih filter atau klik bagian di kiri</span></div>
+        </div>
+      </div>
+      <div class="question" id="questionText">Pilih kumpulan soal, lalu klik “Mulai / Terapkan Filter”.</div>
+      <div class="options" id="options"></div>
+      <div class="quizFoot">
+        <div class="tiny" id="answerState">Belum dimulai.</div>
+        <div>
+          <button class="actionBtn" id="prevBtn" onclick="prevQ()">← Sebelumnya</button>
+          <button class="actionBtn primary" id="nextBtn" onclick="nextQ()">Berikutnya →</button>
+        </div>
+      </div>
+    </div>
+    <div id="resultView" class="results"></div>
+  </div>
+</section>
+
+<div class="footer">TKA Bahasa Indonesia Advanced Practice Lab · dibuat untuk belajar, berlatih, dan memperbaiki kesalahan.</div>
+</main>
+
+<script>
+const DB = {
+  "questions": [
+    {
+      "id": "A01",
+      "section": "A",
+      "topic": "Unsur intrinsik dalam cerita",
+      "level": "Mudah",
+      "q": "Bacalah kutipan: “Rani tetap mengembalikan dompet yang ditemukannya meskipun tidak ada seorang pun yang melihat.” Unsur intrinsik yang paling menonjol adalah …",
+      "opts": [
+        "A. alur",
+        "B. amanat",
+        "C. latar",
+        "D. sudut pandang",
+        "E. konflik"
+      ],
+      "ans": 1,
+      "exp": "Tindakan Rani menegaskan pesan moral agar bersikap jujur. Pesan moral dalam cerita disebut amanat."
+    },
+    {
+      "id": "A02",
+      "section": "A",
+      "topic": "Unsur intrinsik dalam cerita",
+      "level": "Sedang",
+      "q": "“Sejak pagi hujan tidak berhenti. Di halte yang sepi, Dimas menggenggam surat itu sambil menunggu bus terakhir.” Unsur intrinsik yang dominan pada kutipan tersebut adalah …",
+      "opts": [
+        "A. penokohan",
+        "B. tema",
+        "C. latar",
+        "D. amanat",
+        "E. gaya bahasa"
+      ],
+      "ans": 2,
+      "exp": "Tempat (halte), waktu (sejak pagi/terakhir), dan suasana (sepi, hujan) menunjukkan latar."
+    },
+    {
+      "id": "A03",
+      "section": "A",
+      "topic": "Unsur intrinsik dalam cerita",
+      "level": "Sulit",
+      "q": "Tokoh utama selalu memilih diam ketika menghadapi masalah, tetapi pada akhir cerita ia justru mengakui kesalahannya di depan seluruh kelas. Perubahan tersebut paling tepat menunjukkan …",
+      "opts": [
+        "A. perubahan watak tokoh",
+        "B. perubahan latar",
+        "C. pergeseran sudut pandang",
+        "D. munculnya alur mundur",
+        "E. perubahan tema"
+      ],
+      "ans": 0,
+      "exp": "Tokoh mengalami perkembangan sikap dari pasif menjadi berani bertanggung jawab. Itu merupakan perubahan watak/karakterisasi."
+    },
+    {
+      "id": "A04",
+      "section": "A",
+      "topic": "Unsur intrinsik dalam cerita",
+      "level": "HOTS",
+      "q": "Dalam sebuah cerpen, konflik utama tidak pernah disebutkan secara langsung. Pembaca menyimpulkannya dari dialog, tindakan tokoh, dan benda yang terus muncul, yaitu jam rusak milik ayah tokoh utama. Teknik penyajian konflik tersebut paling efektif karena …",
+      "opts": [
+        "A. konflik menjadi sepenuhnya acak",
+        "B. pembaca dipaksa menghafal tokoh",
+        "C. informasi dibangun melalui petunjuk sehingga pembaca melakukan inferensi",
+        "D. alur otomatis berubah menjadi mundur",
+        "E. latar menjadi satu-satunya unsur penting"
+      ],
+      "ans": 2,
+      "exp": "Cerita memberi petunjuk yang harus dirangkaikan pembaca. Ini membuat pembaca melakukan inferensi dan memperkuat keterlibatan dalam cerita."
+    },
+    {
+      "id": "B01",
+      "section": "B",
+      "topic": "Jenis kalimat",
+      "level": "Mudah",
+      "q": "Kalimat “Tutup pintu itu sekarang!” termasuk kalimat …",
+      "opts": [
+        "A. deklaratif",
+        "B. interogatif",
+        "C. imperatif",
+        "D. eksklamatif",
+        "E. persuasif"
+      ],
+      "ans": 2,
+      "exp": "Kalimat imperatif berisi perintah atau larangan."
+    },
+    {
+      "id": "B02",
+      "section": "B",
+      "topic": "Jenis kalimat",
+      "level": "Sedang",
+      "q": "Kalimat yang termasuk interogatif adalah …",
+      "opts": [
+        "A. Mereka belajar di perpustakaan.",
+        "B. Tolong kumpulkan tugas itu.",
+        "C. Betapa indah pemandangan ini!",
+        "D. Mengapa hasil penelitian itu berbeda?",
+        "E. Jangan membuang sampah sembarangan."
+      ],
+      "ans": 3,
+      "exp": "Kalimat interogatif berfungsi menanyakan sesuatu; penandanya dapat berupa kata tanya seperti mengapa."
+    },
+    {
+      "id": "B03",
+      "section": "B",
+      "topic": "Jenis kalimat",
+      "level": "Sulit",
+      "q": "“Meskipun waktu penelitian terbatas, tim tetap menyelesaikan pengumpulan data.” Berdasarkan struktur dan hubungannya, kalimat tersebut merupakan …",
+      "opts": [
+        "A. kalimat tunggal",
+        "B. kalimat majemuk setara",
+        "C. kalimat majemuk bertingkat",
+        "D. kalimat minor",
+        "E. kalimat inversi"
+      ],
+      "ans": 2,
+      "exp": "Klausa “Meskipun waktu penelitian terbatas” merupakan anak kalimat yang bergantung pada “tim tetap menyelesaikan pengumpulan data”. Jadi, majemuk bertingkat."
+    },
+    {
+      "id": "B04",
+      "section": "B",
+      "topic": "Jenis kalimat",
+      "level": "HOTS",
+      "q": "Perhatikan dua kalimat: (1) “Penelitian selesai.” (2) “Penelitian yang dilaksanakan selama tiga bulan itu akhirnya selesai.” Pernyataan yang paling tepat adalah …",
+      "opts": [
+        "A. Keduanya sama-sama kalimat tunggal tanpa perluasan",
+        "B. Kalimat (2) mengalami perluasan dengan klausa pewatas",
+        "C. Kalimat (1) adalah kalimat majemuk",
+        "D. Kalimat (2) hanya mengalami penghilangan subjek",
+        "E. Kalimat (1) lebih kompleks secara sintaksis"
+      ],
+      "ans": 1,
+      "exp": "Pada kalimat (2), inti “Penelitian ... selesai” diperluas oleh klausa/pewatas “yang dilaksanakan selama tiga bulan itu”."
+    },
+    {
+      "id": "C01",
+      "section": "C",
+      "topic": "Tanda koma",
+      "level": "Mudah",
+      "q": "Penulisan yang tepat adalah …",
+      "opts": [
+        "A. Namun hasilnya belum final.",
+        "B. Namun, hasilnya belum final.",
+        "C. Namun hasilnya, belum final.",
+        "D. Namun, hasilnya, belum final.",
+        "E. Namun hasilnya belum, final."
+      ],
+      "ans": 1,
+      "exp": "Kata penghubung antarkalimat “Namun” di awal kalimat diikuti tanda koma."
+    },
+    {
+      "id": "C02",
+      "section": "C",
+      "topic": "Tanda koma",
+      "level": "Sedang",
+      "q": "Kalimat yang penggunaan tanda komanya tepat adalah …",
+      "opts": [
+        "A. Jika hujan turun kita membatalkan kegiatan.",
+        "B. Jika hujan turun, kita membatalkan kegiatan.",
+        "C. Jika, hujan turun kita membatalkan kegiatan.",
+        "D. Jika hujan, turun kita membatalkan kegiatan.",
+        "E. Jika hujan turun kita, membatalkan kegiatan."
+      ],
+      "ans": 1,
+      "exp": "Anak kalimat yang mendahului induk kalimat dipisahkan dengan koma."
+    },
+    {
+      "id": "C03",
+      "section": "C",
+      "topic": "Tanda koma",
+      "level": "Sulit",
+      "q": "Pilih kalimat dengan penggunaan koma paling tepat.",
+      "opts": [
+        "A. Para peserta, yang datang tepat waktu mendapat sertifikat.",
+        "B. Para peserta yang datang tepat waktu, mendapat sertifikat.",
+        "C. Para peserta yang datang tepat waktu mendapat sertifikat.",
+        "D. Para peserta yang datang, tepat waktu mendapat sertifikat.",
+        "E. Para peserta yang datang tepat waktu mendapat, sertifikat."
+      ],
+      "ans": 2,
+      "exp": "Klausa pewatas “yang datang tepat waktu” membatasi makna “para peserta”, sehingga tidak perlu diapit koma."
+    },
+    {
+      "id": "C04",
+      "section": "C",
+      "topic": "Tanda koma",
+      "level": "HOTS",
+      "q": "Kalimat berikut berpotensi bermakna ganda: “Menurut kepala sekolah siswa yang terlambat mengikuti upacara.” Perbaikan yang paling jelas adalah …",
+      "opts": [
+        "A. Menurut kepala sekolah, siswa yang terlambat mengikuti upacara.",
+        "B. Menurut kepala sekolah siswa, yang terlambat mengikuti upacara.",
+        "C. Menurut kepala sekolah siswa yang terlambat, mengikuti upacara.",
+        "D. Menurut kepala sekolah, siswa, yang terlambat mengikuti upacara.",
+        "E. Menurut, kepala sekolah siswa yang terlambat mengikuti upacara."
+      ],
+      "ans": 0,
+      "exp": "Koma setelah frasa pengantar “Menurut kepala sekolah” memperjelas bahwa bagian itu merupakan keterangan sumber/pernyataan."
+    },
+    {
+      "id": "D01",
+      "section": "D",
+      "topic": "Kalimat utama dan penjelas",
+      "level": "Mudah",
+      "q": "“Olahraga teratur menjaga kebugaran tubuh. Aktivitas fisik membantu memperkuat otot. Selain itu, olahraga juga meningkatkan daya tahan.” Kalimat utama paragraf adalah …",
+      "opts": [
+        "A. Olahraga teratur menjaga kebugaran tubuh.",
+        "B. Aktivitas fisik membantu memperkuat otot.",
+        "C. Selain itu, olahraga juga meningkatkan daya tahan.",
+        "D. Otot menjadi lebih kuat.",
+        "E. Daya tahan tubuh meningkat."
+      ],
+      "ans": 0,
+      "exp": "Kalimat pertama berisi gagasan umum yang dijelaskan oleh dua kalimat berikutnya."
+    },
+    {
+      "id": "D02",
+      "section": "D",
+      "topic": "Kalimat utama dan penjelas",
+      "level": "Sedang",
+      "q": "Paragraf yang kalimat utamanya terletak di akhir disebut berpola …",
+      "opts": [
+        "A. deduktif",
+        "B. induktif",
+        "C. campuran",
+        "D. kronologis",
+        "E. deskriptif"
+      ],
+      "ans": 1,
+      "exp": "Paragraf induktif mengembangkan beberapa fakta/penjelasan lalu menarik simpulan atau gagasan utama di akhir."
+    },
+    {
+      "id": "D03",
+      "section": "D",
+      "topic": "Kalimat utama dan penjelas",
+      "level": "Sulit",
+      "q": "Kalimat berikut yang paling tepat menjadi kalimat utama adalah …",
+      "opts": [
+        "A. Misalnya, beberapa sekolah mulai menerapkan sistem peminjaman digital.",
+        "B. Sistem tersebut memudahkan siswa mencari buku.",
+        "C. Digitalisasi perpustakaan mengubah cara sekolah mengelola layanan baca.",
+        "D. Siswa dapat mengecek ketersediaan buku melalui gawai.",
+        "E. Data peminjaman juga dapat direkap secara otomatis."
+      ],
+      "ans": 2,
+      "exp": "Kalimat utama harus cukup umum untuk menaungi rincian-rincian pada pilihan lain."
+    },
+    {
+      "id": "D04",
+      "section": "D",
+      "topic": "Kalimat utama dan penjelas",
+      "level": "HOTS",
+      "q": "Sebuah paragraf memiliki empat kalimat: tiga kalimat memuat data tentang penurunan sampah plastik setelah program isi ulang, sedangkan satu kalimat terakhir menyimpulkan bahwa kebijakan isi ulang efektif. Jika diminta menentukan hubungan ketiga data terhadap simpulan, hubungan yang paling tepat adalah …",
+      "opts": [
+        "A. ketiganya merupakan kalimat penjelas yang mendukung kalimat utama",
+        "B. ketiganya merupakan kalimat utama yang saling bertentangan",
+        "C. simpulan menjadi kalimat penjelas bagi data",
+        "D. semua kalimat bersifat setara tanpa hierarki gagasan",
+        "E. data tidak berkaitan karena bersifat kuantitatif"
+      ],
+      "ans": 0,
+      "exp": "Data berfungsi sebagai bukti/penjelasan yang mendukung simpulan umum mengenai efektivitas kebijakan."
+    },
+    {
+      "id": "E01",
+      "section": "E",
+      "topic": "Fakta dan opini",
+      "level": "Mudah",
+      "q": "Manakah yang merupakan fakta?",
+      "opts": [
+        "A. Kota itu adalah kota paling nyaman di Indonesia.",
+        "B. Menurut saya, perpustakaan itu sangat indah.",
+        "C. Air mendidih pada suhu 100°C pada tekanan 1 atm.",
+        "D. Film itu sangat membosankan.",
+        "E. Sekolah tersebut pasti yang terbaik."
+      ],
+      "ans": 2,
+      "exp": "Pernyataan ilmiah tentang titik didih air dapat diverifikasi, sehingga tergolong fakta."
+    },
+    {
+      "id": "E02",
+      "section": "E",
+      "topic": "Fakta dan opini",
+      "level": "Sedang",
+      "q": "Kalimat “Pemerintah seharusnya memperluas ruang terbuka hijau di setiap kecamatan” termasuk …",
+      "opts": [
+        "A. fakta",
+        "B. opini",
+        "C. definisi",
+        "D. data",
+        "E. klasifikasi"
+      ],
+      "ans": 1,
+      "exp": "Kata “seharusnya” menunjukkan penilaian atau saran, sehingga termasuk opini."
+    },
+    {
+      "id": "E03",
+      "section": "E",
+      "topic": "Fakta dan opini",
+      "level": "Sulit",
+      "q": "Pernyataan yang paling jelas memuat opini berbasis fakta adalah …",
+      "opts": [
+        "A. Survei dilakukan pada 500 responden.",
+        "B. Sebanyak 62% responden memilih opsi A.",
+        "C. Hasil survei tersebut menunjukkan bahwa program itu sangat layak diteruskan.",
+        "D. Survei berlangsung selama lima hari.",
+        "E. Responden berasal dari tiga sekolah."
+      ],
+      "ans": 2,
+      "exp": "Kalimat C menggunakan data sebagai dasar, tetapi kesimpulan “sangat layak” merupakan penilaian, sehingga mengandung opini."
+    },
+    {
+      "id": "E04",
+      "section": "E",
+      "topic": "Fakta dan opini",
+      "level": "HOTS",
+      "q": "Dalam artikel, penulis menyebut data kenaikan penggunaan transportasi umum lalu menulis, “Karena itu, jelas masyarakat kini lebih peduli lingkungan.” Kelemahan logika bagian simpulan tersebut adalah …",
+      "opts": [
+        "A. data tidak boleh digunakan untuk menarik simpulan",
+        "B. simpulan mengubah korelasi/data penggunaan menjadi klaim sebab sikap tanpa bukti cukup",
+        "C. kata “jelas” selalu salah secara tata bahasa",
+        "D. transportasi umum tidak pernah berkaitan dengan lingkungan",
+        "E. kalimat tersebut pasti fakta"
+      ],
+      "ans": 1,
+      "exp": "Data penggunaan transportasi umum belum otomatis membuktikan motivasi masyarakat adalah kepedulian lingkungan. Diperlukan bukti tambahan tentang alasan mereka."
+    },
+    {
+      "id": "F01",
+      "section": "F",
+      "topic": "Majas",
+      "level": "Mudah",
+      "q": "“Angin malam berbisik di antara pepohonan.” Majas yang digunakan adalah …",
+      "opts": [
+        "A. hiperbola",
+        "B. personifikasi",
+        "C. metafora",
+        "D. litotes",
+        "E. ironi"
+      ],
+      "ans": 1,
+      "exp": "Angin diberi sifat manusia, yaitu berbisik. Itu personifikasi."
+    },
+    {
+      "id": "F02",
+      "section": "F",
+      "topic": "Majas",
+      "level": "Sedang",
+      "q": "“Ia adalah bintang kelas yang selalu membantu teman-temannya.” Majas pada frasa “bintang kelas” adalah …",
+      "opts": [
+        "A. metafora",
+        "B. personifikasi",
+        "C. metonimia",
+        "D. sinekdoke",
+        "E. repetisi"
+      ],
+      "ans": 0,
+      "exp": "“Bintang kelas” membandingkan siswa dengan bintang secara langsung tanpa kata pembanding, sehingga merupakan metafora."
+    },
+    {
+      "id": "F03",
+      "section": "F",
+      "topic": "Majas",
+      "level": "Sulit",
+      "q": "Kalimat yang mengandung majas ironi adalah …",
+      "opts": [
+        "A. Suaranya mengguncang seluruh stadion.",
+        "B. Rajin sekali kamu—tugas dikumpulkan sebulan terlambat.",
+        "C. Matahari tersenyum dari balik awan.",
+        "D. Ia berlari secepat kilat.",
+        "E. Buku itu menjadi jendela dunia."
+      ],
+      "ans": 1,
+      "exp": "Ironi menyampaikan sindiran dengan kata yang secara permukaan tampak memuji, tetapi maksudnya berlawanan."
+    },
+    {
+      "id": "F04",
+      "section": "F",
+      "topic": "Majas",
+      "level": "HOTS",
+      "q": "Dalam puisi, kota digambarkan sebagai “raksasa lapar yang menelan waktu dan mimpi anak-anak.” Efek utama penggunaan majas tersebut adalah …",
+      "opts": [
+        "A. membuat uraian menjadi ilmiah",
+        "B. menghilangkan makna konotatif",
+        "C. menegaskan gambaran kota yang agresif dan menguras kehidupan",
+        "D. menjelaskan data statistik kota",
+        "E. membuat puisi bebas dari simbol"
+      ],
+      "ans": 2,
+      "exp": "Metafora “raksasa lapar” memberi gambaran kuat dan simbolis tentang kota yang dianggap menguras waktu dan harapan."
+    },
+    {
+      "id": "G01",
+      "section": "G",
+      "topic": "Kata baku, tidak baku, kata serapan",
+      "level": "Mudah",
+      "q": "Kata baku yang tepat adalah …",
+      "opts": [
+        "A. resiko",
+        "B. ijin",
+        "C. aktifitas",
+        "D. risiko",
+        "E. praktek"
+      ],
+      "ans": 3,
+      "exp": "Bentuk bakunya adalah risiko; bentuk lain pada pilihan merupakan bentuk tidak baku."
+    },
+    {
+      "id": "G02",
+      "section": "G",
+      "topic": "Kata baku, tidak baku, kata serapan",
+      "level": "Sedang",
+      "q": "Kalimat yang menggunakan bentuk baku adalah …",
+      "opts": [
+        "A. Ia menganalisa data penelitian.",
+        "B. Ia menganalisis data penelitian.",
+        "C. Ia menganalisa-kan data penelitian.",
+        "D. Ia menganalisakan data penelitian.",
+        "E. Ia analisa data penelitian."
+      ],
+      "ans": 1,
+      "exp": "Bentuk baku verba adalah “menganalisis”, bukan “menganalisa”."
+    },
+    {
+      "id": "G03",
+      "section": "G",
+      "topic": "Kata baku, tidak baku, kata serapan",
+      "level": "Sulit",
+      "q": "Kalimat yang menggunakan kata serapan secara tepat adalah …",
+      "opts": [
+        "A. Tim melakukan evaluasi terhadap program tersebut.",
+        "B. Tim melakukan evaluase terhadap program tersebut.",
+        "C. Tim melakukan evalusi terhadap program tersebut.",
+        "D. Tim melakukan evaluatip terhadap program tersebut.",
+        "E. Tim melakukan evaluatif terhadap program tersebut sebagai verba."
+      ],
+      "ans": 0,
+      "exp": "“Evaluasi” merupakan bentuk serapan yang sudah dibakukan dan tepat sebagai nomina."
+    },
+    {
+      "id": "G04",
+      "section": "G",
+      "topic": "Kata baku, tidak baku, kata serapan",
+      "level": "HOTS",
+      "q": "Dalam karya ilmiah, penulis menulis “efektifitas”. Pilihan revisi yang paling tepat adalah …",
+      "opts": [
+        "A. tetap digunakan karena lebih populer",
+        "B. diubah menjadi “efektivitas” karena bentuk itu baku",
+        "C. diubah menjadi “efektifitasan”",
+        "D. diubah menjadi “efektipitas”",
+        "E. diubah menjadi “efektif” tanpa mempertimbangkan fungsi kalimat"
+      ],
+      "ans": 1,
+      "exp": "Nomina baku yang bermakna keberhasilan mencapai hasil yang diharapkan adalah “efektivitas”."
+    },
+    {
+      "id": "H01",
+      "section": "H",
+      "topic": "Kalimat efektif",
+      "level": "Mudah",
+      "q": "Kalimat paling efektif adalah …",
+      "opts": [
+        "A. Para siswa-siswa mengikuti kegiatan.",
+        "B. Para siswa mengikuti kegiatan.",
+        "C. Para siswa semuanya mengikuti kegiatan bersama-sama.",
+        "D. Para siswa mengikuti kegiatan-kegiatan semuanya.",
+        "E. Para siswa semua mengikuti kegiatan yang dilaksanakan bersama."
+      ],
+      "ans": 1,
+      "exp": "“Para” sudah menyatakan jamak, sehingga tidak perlu bentuk ulang “siswa-siswa”."
+    },
+    {
+      "id": "H02",
+      "section": "H",
+      "topic": "Kalimat efektif",
+      "level": "Sedang",
+      "q": "Pilih perbaikan paling efektif: “Karena hujan deras sehingga pertandingan ditunda.”",
+      "opts": [
+        "A. Karena hujan deras sehingga pertandingan ditunda.",
+        "B. Karena hujan deras, maka pertandingan ditunda.",
+        "C. Hujan deras sehingga pertandingan ditunda.",
+        "D. Karena hujan deras, pertandingan ditunda.",
+        "E. Hujan deras, maka pertandingan ditunda."
+      ],
+      "ans": 3,
+      "exp": "“Karena” sudah berfungsi sebagai penanda sebab. Tidak perlu pasangan “sehingga/maka” sekaligus."
+    },
+    {
+      "id": "H03",
+      "section": "H",
+      "topic": "Kalimat efektif",
+      "level": "Sulit",
+      "q": "Kalimat yang tidak efektif karena penggunaan unsur berlebihan adalah …",
+      "opts": [
+        "A. Penelitian itu dilakukan di sekolah.",
+        "B. Para peserta diwajibkan untuk membawa kartu identitas.",
+        "C. Hasil penelitian dibahas secara mendalam.",
+        "D. Data dikumpulkan melalui wawancara.",
+        "E. Kesimpulan disusun berdasarkan data."
+      ],
+      "ans": 1,
+      "exp": "Dalam konstruksi “diwajibkan membawa”, kata “untuk” dapat dihilangkan agar lebih ringkas dan efektif."
+    },
+    {
+      "id": "H04",
+      "section": "H",
+      "topic": "Kalimat efektif",
+      "level": "HOTS",
+      "q": "Kalimat “Berdasarkan hasil penelitian menunjukkan bahwa minat baca meningkat” dianggap tidak efektif terutama karena …",
+      "opts": [
+        "A. tidak memiliki predikat",
+        "B. keterangan “berdasarkan hasil penelitian” tidak mempunyai subjek yang tepat untuk predikat “menunjukkan”",
+        "C. terlalu banyak kata baku",
+        "D. memakai konjungsi yang salah",
+        "E. tidak memiliki kata benda"
+      ],
+      "ans": 1,
+      "exp": "Konstruksi “Berdasarkan hasil penelitian menunjukkan...” membuat subjeknya tidak jelas. Perbaikan: “Berdasarkan hasil penelitian, minat baca meningkat” atau “Hasil penelitian menunjukkan bahwa minat baca meningkat.”"
+    },
+    {
+      "id": "I01",
+      "section": "I",
+      "topic": "Ide pokok paragraf",
+      "level": "Mudah",
+      "q": "“Membaca rutin dapat memperluas kosakata. Kebiasaan ini juga membantu seseorang memahami berbagai gaya penulisan.” Ide pokok paragraf adalah …",
+      "opts": [
+        "A. membaca memperluas kosakata",
+        "B. manfaat membaca rutin bagi kemampuan bahasa",
+        "C. gaya penulisan sulit dipahami",
+        "D. kosakata hanya diperoleh dari buku",
+        "E. membaca harus dilakukan setiap hari"
+      ],
+      "ans": 1,
+      "exp": "Dua kalimat sama-sama menjelaskan manfaat membaca rutin bagi kemampuan bahasa secara umum."
+    },
+    {
+      "id": "I02",
+      "section": "I",
+      "topic": "Ide pokok paragraf",
+      "level": "Sedang",
+      "q": "Paragraf membahas pencemaran sungai, sumber limbah rumah tangga, dampak terhadap ikan, dan perlunya pengelolaan limbah. Ide pokok yang paling mencakup semuanya adalah …",
+      "opts": [
+        "A. ikan sungai semakin berkurang",
+        "B. limbah rumah tangga adalah satu-satunya masalah",
+        "C. pencemaran sungai berdampak luas dan memerlukan penanganan",
+        "D. pengelolaan limbah tidak penting",
+        "E. sungai hanya digunakan untuk perikanan"
+      ],
+      "ans": 2,
+      "exp": "Pilihan C paling luas dan mampu menaungi sumber, dampak, serta solusi yang dibahas."
+    },
+    {
+      "id": "I03",
+      "section": "I",
+      "topic": "Ide pokok paragraf",
+      "level": "Sulit",
+      "q": "Dalam paragraf deduktif, kalimat pertama menyatakan bahwa penggunaan gawai tanpa kontrol dapat mengganggu kualitas tidur. Kalimat berikutnya menjelaskan paparan cahaya layar, notifikasi, dan kebiasaan tidur larut. Ide pokoknya adalah …",
+      "opts": [
+        "A. cahaya layar berbahaya",
+        "B. notifikasi harus dimatikan",
+        "C. kebiasaan tidur larut terjadi karena gawai",
+        "D. penggunaan gawai tanpa kontrol dapat mengganggu kualitas tidur",
+        "E. semua gawai menyebabkan insomnia"
+      ],
+      "ans": 3,
+      "exp": "Kalimat pertama merupakan generalisasi yang kemudian dijelaskan oleh rincian-rincian."
+    },
+    {
+      "id": "I04",
+      "section": "I",
+      "topic": "Ide pokok paragraf",
+      "level": "HOTS",
+      "q": "Sebuah paragraf berisi tiga contoh kebijakan sekolah yang berhasil mengurangi sampah, lalu menyatakan bahwa perubahan perilaku siswa lebih efektif ketika disertai sistem dan fasilitas. Ide pokok paling tepat adalah …",
+      "opts": [
+        "A. tiga sekolah memiliki kebijakan yang berbeda",
+        "B. fasilitas saja sudah cukup mengubah perilaku",
+        "C. perubahan perilaku lingkungan lebih efektif jika didukung sistem dan fasilitas",
+        "D. siswa selalu sulit berubah",
+        "E. sampah hanya dapat dikurangi melalui larangan"
+      ],
+      "ans": 2,
+      "exp": "Pilihan C merangkum pola contoh dan simpulan yang menghubungkan kebijakan, sistem, fasilitas, dan perilaku."
+    },
+    {
+      "id": "J01",
+      "section": "J",
+      "topic": "Sastra Indonesia dan terjemah",
+      "level": "Mudah",
+      "q": "Kalimat yang paling tepat menerjemahkan “She decided to keep the old letter” adalah …",
+      "opts": [
+        "A. Dia memutuskan membuang surat lama itu.",
+        "B. Dia memutuskan menyimpan surat lama itu.",
+        "C. Dia diputuskan menyimpan surat lama itu.",
+        "D. Dia memutuskan membaca surat baru itu.",
+        "E. Dia memutuskan mengambil surat lama itu kembali."
+      ],
+      "ans": 1,
+      "exp": "“Keep” dalam konteks ini berarti menyimpan, bukan membuang atau mengambil kembali."
+    },
+    {
+      "id": "J02",
+      "section": "J",
+      "topic": "Sastra Indonesia dan terjemah",
+      "level": "Sedang",
+      "q": "Dalam karya sastra, istilah “setting” paling tepat diterjemahkan sebagai …",
+      "opts": [
+        "A. tema",
+        "B. latar",
+        "C. alur",
+        "D. penokohan",
+        "E. amanat"
+      ],
+      "ans": 1,
+      "exp": "Setting dalam kajian sastra berarti latar, yaitu tempat, waktu, dan suasana."
+    },
+    {
+      "id": "J03",
+      "section": "J",
+      "topic": "Sastra Indonesia dan terjemah",
+      "level": "Sulit",
+      "q": "Terjemahan sastra yang baik tidak selalu bersifat kata demi kata karena …",
+      "opts": [
+        "A. semua kata asing harus dihilangkan",
+        "B. makna, nuansa, dan gaya dalam bahasa sumber perlu dipertahankan secara wajar dalam bahasa sasaran",
+        "C. penerjemah bebas mengubah isi sesuka hati",
+        "D. struktur bahasa sasaran tidak penting",
+        "E. konteks tidak diperlukan"
+      ],
+      "ans": 1,
+      "exp": "Terjemahan sastra menuntut kesepadanan makna dan nuansa, bukan sekadar kecocokan kata per kata."
+    },
+    {
+      "id": "J04",
+      "section": "J",
+      "topic": "Sastra Indonesia dan terjemah",
+      "level": "HOTS",
+      "q": "Ungkapan “The city never sleeps” diterjemahkan menjadi “Kota itu tak pernah tidur.” Dari sudut gaya bahasa, pilihan tersebut efektif karena …",
+      "opts": [
+        "A. menghilangkan personifikasi",
+        "B. mempertahankan citra personifikasi sekaligus terdengar alami dalam bahasa Indonesia",
+        "C. mengubah makna menjadi fakta ilmiah",
+        "D. menghapus nuansa puitis",
+        "E. menerjemahkan setiap kata secara teknis tanpa konteks"
+      ],
+      "ans": 1,
+      "exp": "Ungkapan ini adalah personifikasi. Terjemahan mempertahankan efek tersebut dan tetap alami dalam bahasa Indonesia."
+    },
+    {
+      "id": "K01",
+      "section": "K",
+      "topic": "Imbuhan dan afiks",
+      "level": "Mudah",
+      "q": "Kata “berlari” memiliki imbuhan …",
+      "opts": [
+        "A. ber-",
+        "B. me-",
+        "C. di-",
+        "D. pe-",
+        "E. -kan"
+      ],
+      "ans": 0,
+      "exp": "“Ber-” merupakan prefiks pada kata “berlari”."
+    },
+    {
+      "id": "K02",
+      "section": "K",
+      "topic": "Imbuhan dan afiks",
+      "level": "Sedang",
+      "q": "Pada kata “pembelajaran”, bentuk dasar dan afiks yang tepat adalah …",
+      "opts": [
+        "A. ajar + pe- + -an",
+        "B. belajar + -an saja",
+        "C. pelajar + me-",
+        "D. ajar + di-",
+        "E. belajar + pe-"
+      ],
+      "ans": 0,
+      "exp": "Kata “pembelajaran” berhubungan dengan bentuk dasar “ajar” dengan proses pembentukan yang melibatkan peN- dan -an."
+    },
+    {
+      "id": "K03",
+      "section": "K",
+      "topic": "Imbuhan dan afiks",
+      "level": "Sulit",
+      "q": "Perubahan makna pada pasangan “tulis” → “menulis” paling tepat adalah …",
+      "opts": [
+        "A. nomina menjadi adverbia",
+        "B. verba menjadi adjektiva",
+        "C. bentuk dasar menjadi verba yang menyatakan melakukan suatu tindakan",
+        "D. kata dasar menjadi kata tugas",
+        "E. bentuk aktif menjadi bentuk pasif"
+      ],
+      "ans": 2,
+      "exp": "Prefiks meN- pada “menulis” membentuk verba aktif yang menyatakan melakukan tindakan menulis."
+    },
+    {
+      "id": "K04",
+      "section": "K",
+      "topic": "Imbuhan dan afiks",
+      "level": "HOTS",
+      "q": "Perhatikan kata “perubahan”. Secara semantis, kata tersebut mengacu pada …",
+      "opts": [
+        "A. pelaku yang mengubah",
+        "B. proses atau hasil berubah",
+        "C. alat untuk mengubah",
+        "D. tempat mengubah",
+        "E. orang yang menerima perubahan"
+      ],
+      "ans": 1,
+      "exp": "Konfiks peN-...-an pada konteks ini membentuk nomina abstrak yang menyatakan proses/hasil perubahan."
+    },
+    {
+      "id": "L01",
+      "section": "L",
+      "topic": "Teks fiksi dan nonfiksi",
+      "level": "Mudah",
+      "q": "Ciri utama teks fiksi adalah …",
+      "opts": [
+        "A. selalu berisi data statistik",
+        "B. dibangun dari imajinasi walaupun dapat terinspirasi kenyataan",
+        "C. harus memakai istilah ilmiah",
+        "D. tidak boleh memiliki tokoh",
+        "E. hanya berisi instruksi"
+      ],
+      "ans": 1,
+      "exp": "Fiksi mengutamakan dunia rekaan/imajinatif, meskipun unsur realistis dapat digunakan."
+    },
+    {
+      "id": "L02",
+      "section": "L",
+      "topic": "Teks fiksi dan nonfiksi",
+      "level": "Sedang",
+      "q": "Biografi termasuk teks nonfiksi karena …",
+      "opts": [
+        "A. selalu berupa dialog",
+        "B. tokoh dan peristiwa utamanya merujuk pada kehidupan nyata",
+        "C. tidak memiliki struktur",
+        "D. seluruh isinya khayalan",
+        "E. hanya berisi pendapat penulis"
+      ],
+      "ans": 1,
+      "exp": "Biografi membahas tokoh nyata dan rangkaian peristiwa kehidupannya."
+    },
+    {
+      "id": "L03",
+      "section": "L",
+      "topic": "Teks fiksi dan nonfiksi",
+      "level": "Sulit",
+      "q": "Sebuah novel memakai tokoh sejarah nyata, tetapi dialog dan beberapa peristiwa diciptakan penulis. Karya tersebut paling tepat disebut …",
+      "opts": [
+        "A. laporan penelitian",
+        "B. fiksi sejarah",
+        "C. berita langsung",
+        "D. ensiklopedia",
+        "E. teks prosedur"
+      ],
+      "ans": 1,
+      "exp": "Karya tersebut memakai latar/peristiwa sejarah nyata tetapi mengandung pengembangan imajinatif, sehingga termasuk fiksi sejarah."
+    },
+    {
+      "id": "L04",
+      "section": "L",
+      "topic": "Teks fiksi dan nonfiksi",
+      "level": "HOTS",
+      "q": "Saat menilai keandalan informasi dari novel yang mengangkat wabah, pembaca sebaiknya …",
+      "opts": [
+        "A. menganggap semua fakta medis dalam novel pasti benar",
+        "B. memverifikasi informasi faktual kepada sumber tepercaya meskipun cerita terasa realistis",
+        "C. menolak seluruh novel karena fiksi",
+        "D. hanya mengandalkan pendapat tokoh utama",
+        "E. menghapus bagian ilmiah dari cerita"
+      ],
+      "ans": 1,
+      "exp": "Teks fiksi dapat memuat informasi faktual, tetapi kebenarannya tetap harus diverifikasi dari sumber tepercaya."
+    },
+    {
+      "id": "M01",
+      "section": "M",
+      "topic": "Kohesi dan koherensi",
+      "level": "Mudah",
+      "q": "Kata “selain itu” dalam paragraf berfungsi terutama sebagai penanda …",
+      "opts": [
+        "A. pertentangan",
+        "B. penambahan",
+        "C. sebab",
+        "D. simpulan",
+        "E. urutan waktu"
+      ],
+      "ans": 1,
+      "exp": "“Selain itu” menambahkan informasi baru yang masih sejalan dengan informasi sebelumnya."
+    },
+    {
+      "id": "M02",
+      "section": "M",
+      "topic": "Kohesi dan koherensi",
+      "level": "Sedang",
+      "q": "Paragraf yang memiliki kohesi tetapi tidak koheren berarti …",
+      "opts": [
+        "A. semua kalimat saling berhubungan secara gramatikal, tetapi gagasannya tidak logis/selaras",
+        "B. tidak memiliki kata hubung sama sekali",
+        "C. seluruh kalimat pasti efektif",
+        "D. hanya memiliki satu kalimat",
+        "E. semua informasi berupa data"
+      ],
+      "ans": 0,
+      "exp": "Kohesi berkaitan dengan keterkaitan bentuk bahasa; koherensi berkaitan dengan keterpaduan makna/logika."
+    },
+    {
+      "id": "M03",
+      "section": "M",
+      "topic": "Kohesi dan koherensi",
+      "level": "Sulit",
+      "q": "“Rina membeli buku baru. Buku itu digunakan untuk belajar TKA.” Hubungan kohesi paling jelas ditunjukkan oleh …",
+      "opts": [
+        "A. pengulangan kata “Rina”",
+        "B. referensi “itu” yang mengacu pada “buku baru”",
+        "C. penggunaan verba “membeli”",
+        "D. tidak adanya konjungsi",
+        "E. perpindahan topik tanpa penanda"
+      ],
+      "ans": 1,
+      "exp": "Kata “itu” merupakan unsur referensial yang menghubungkan kalimat kedua dengan unsur sebelumnya."
+    },
+    {
+      "id": "M04",
+      "section": "M",
+      "topic": "Kohesi dan koherensi",
+      "level": "HOTS",
+      "q": "Urutan yang paling koheren untuk membentuk paragraf adalah: (1) Karena itu, sekolah perlu menyediakan ruang baca yang nyaman. (2) Minat baca siswa dapat tumbuh jika lingkungan membaca mendukung. (3) Ruang baca yang sempit dan bising membuat siswa sulit berkonsentrasi. (4) Lingkungan membaca bukan hanya soal koleksi buku, tetapi juga suasana. Urutan terbaik adalah …",
+      "opts": [
+        "A. 1-2-3-4",
+        "B. 2-4-3-1",
+        "C. 3-1-2-4",
+        "D. 4-3-1-2",
+        "E. 2-3-4-1"
+      ],
+      "ans": 1,
+      "exp": "Mulai dari gagasan umum (2), diperjelas (4), diberi masalah/contoh (3), lalu simpulan/solusi (1)."
+    },
+    {
+      "id": "N01",
+      "section": "N",
+      "topic": "Informasi tersurat dan tersirat",
+      "level": "Mudah",
+      "q": "“Raka membawa payung karena langit telah gelap.” Informasi tersurat adalah …",
+      "opts": [
+        "A. Raka takut hujan.",
+        "B. Raka membawa payung.",
+        "C. Raka sedang sakit.",
+        "D. Hujan pasti turun.",
+        "E. Raka pergi jauh."
+      ],
+      "ans": 1,
+      "exp": "Informasi tersurat dinyatakan langsung dalam teks: Raka membawa payung."
+    },
+    {
+      "id": "N02",
+      "section": "N",
+      "topic": "Informasi tersurat dan tersirat",
+      "level": "Sedang",
+      "q": "“Mira menutup laptop pada pukul sepuluh malam. Esok paginya, ia tertidur saat guru menjelaskan.” Informasi tersirat yang paling logis adalah …",
+      "opts": [
+        "A. Mira tidak pernah belajar.",
+        "B. Mira mungkin kurang tidur.",
+        "C. Guru membenci Mira.",
+        "D. Laptop Mira rusak.",
+        "E. Mira tidak masuk sekolah."
+      ],
+      "ans": 1,
+      "exp": "Teks tidak langsung mengatakan “kurang tidur”, tetapi hubungan waktu dan kondisi pagi memungkinkan inferensi tersebut."
+    },
+    {
+      "id": "N03",
+      "section": "N",
+      "topic": "Informasi tersurat dan tersirat",
+      "level": "Sulit",
+      "q": "Dalam artikel disebutkan bahwa jumlah penumpang bus meningkat setelah tarif parkir dinaikkan dan rute bus diperluas. Kesimpulan tersirat yang paling hati-hati adalah …",
+      "opts": [
+        "A. kenaikan tarif parkir pasti satu-satunya penyebab",
+        "B. perluasan rute dan perubahan biaya parkir kemungkinan berkaitan dengan kenaikan penggunaan bus",
+        "C. bus selalu lebih cepat daripada mobil",
+        "D. semua warga meninggalkan kendaraan pribadi",
+        "E. kebijakan tersebut pasti berhasil di setiap kota"
+      ],
+      "ans": 1,
+      "exp": "Kesimpulan harus mempertahankan batas bukti. Data menunjukkan keterkaitan, bukan kepastian sebab tunggal atau berlaku universal."
+    },
+    {
+      "id": "N04",
+      "section": "N",
+      "topic": "Informasi tersurat dan tersirat",
+      "level": "HOTS",
+      "q": "Sebuah teks menyatakan bahwa perpustakaan memperpanjang jam buka, tetapi jumlah kunjungan tetap rendah. Penulis kemudian menyebut lokasi perpustakaan jauh dari ruang kelas dan akses malam terbatas. Inferensi paling kuat adalah …",
+      "opts": [
+        "A. siswa tidak suka membaca",
+        "B. memperpanjang jam buka saja belum cukup mengatasi hambatan akses",
+        "C. buku di perpustakaan pasti sedikit",
+        "D. jam buka justru menurunkan kunjungan",
+        "E. perpustakaan seharusnya ditutup"
+      ],
+      "ans": 1,
+      "exp": "Teks memberi bukti bahwa faktor akses/lokasi membatasi manfaat dari penambahan jam buka."
+    },
+    {
+      "id": "O01",
+      "section": "O",
+      "topic": "Teks akademik",
+      "level": "Mudah",
+      "q": "Ciri bahasa teks akademik yang paling tepat adalah …",
+      "opts": [
+        "A. subjektif dan emosional",
+        "B. informatif, logis, dan menggunakan istilah secara tepat",
+        "C. penuh slang",
+        "D. selalu menggunakan dialog",
+        "E. tidak memerlukan sumber"
+      ],
+      "ans": 1,
+      "exp": "Teks akademik menekankan ketepatan, objektivitas relatif, logika, dan penggunaan istilah serta sumber secara bertanggung jawab."
+    },
+    {
+      "id": "O02",
+      "section": "O",
+      "topic": "Teks akademik",
+      "level": "Sedang",
+      "q": "Kalimat akademik yang paling tepat adalah …",
+      "opts": [
+        "A. Penelitian ini keren banget dan hasilnya bikin kaget.",
+        "B. Hasil penelitian menunjukkan peningkatan minat baca setelah intervensi dilakukan.",
+        "C. Menurut saya hasilnya pasti bagus.",
+        "D. Pokoknya program ini berhasil.",
+        "E. Siswa-siswa tuh jadi rajin banget."
+      ],
+      "ans": 1,
+      "exp": "Kalimat B formal, informatif, dan berbasis hasil penelitian."
+    },
+    {
+      "id": "O03",
+      "section": "O",
+      "topic": "Teks akademik",
+      "level": "Sulit",
+      "q": "Dalam paragraf akademik, penggunaan data statistik paling kuat apabila …",
+      "opts": [
+        "A. dibiarkan tanpa sumber",
+        "B. dipilih karena terlihat besar",
+        "C. disertai konteks, sumber, dan penjelasan relevansinya dengan argumen",
+        "D. hanya ditulis sebagai angka",
+        "E. digunakan untuk menggantikan seluruh penalaran"
+      ],
+      "ans": 2,
+      "exp": "Data menjadi bukti yang kuat jika konteks, sumber, dan kaitannya dengan argumen jelas."
+    },
+    {
+      "id": "O04",
+      "section": "O",
+      "topic": "Teks akademik",
+      "level": "HOTS",
+      "q": "Pernyataan “Sebanyak 70% responden menyukai metode baru, maka metode itu pasti paling efektif” bermasalah karena …",
+      "opts": [
+        "A. angka 70% terlalu kecil untuk disebut data",
+        "B. preferensi responden disamakan begitu saja dengan ukuran efektivitas tanpa indikator hasil yang jelas",
+        "C. kata “maka” tidak pernah boleh dipakai",
+        "D. responden tidak boleh digunakan dalam penelitian",
+        "E. metode baru tidak boleh disukai"
+      ],
+      "ans": 1,
+      "exp": "Suka/preferensi dan efektivitas adalah konstruk berbeda. Klaim efektivitas memerlukan indikator hasil yang sesuai."
+    },
+    {
+      "id": "P01",
+      "section": "P",
+      "topic": "Tanggapan, respons, dan kritik",
+      "level": "Mudah",
+      "q": "Tanggapan yang santun terhadap pendapat berbeda adalah …",
+      "opts": [
+        "A. Pendapatmu jelas salah.",
+        "B. Saya tidak setuju, tetapi alasan tersebut menarik untuk dipertimbangkan.",
+        "C. Kamu tidak paham apa-apa.",
+        "D. Itu pendapat paling buruk.",
+        "E. Sudahlah, jangan bicara."
+      ],
+      "ans": 1,
+      "exp": "Tanggapan santun menyatakan ketidaksetujuan tanpa menyerang pribadi dan tetap mengakui adanya alasan yang bisa dipertimbangkan."
+    },
+    {
+      "id": "P02",
+      "section": "P",
+      "topic": "Tanggapan, respons, dan kritik",
+      "level": "Sedang",
+      "q": "Kritik yang paling konstruktif terhadap sebuah poster sekolah adalah …",
+      "opts": [
+        "A. Posternya jelek.",
+        "B. Tidak bagus sama sekali.",
+        "C. Informasinya cukup lengkap, tetapi ukuran tanggal kegiatan terlalu kecil sehingga sulit dibaca dari jauh.",
+        "D. Pembuatnya tidak berbakat.",
+        "E. Saya tidak suka warnanya."
+      ],
+      "ans": 2,
+      "exp": "Kritik C spesifik, berfokus pada karya, dan memberi dasar perbaikan."
+    },
+    {
+      "id": "P03",
+      "section": "P",
+      "topic": "Tanggapan, respons, dan kritik",
+      "level": "Sulit",
+      "q": "Respons paling tepat terhadap klaim “Semua siswa pasti belajar lebih efektif dengan musik” adalah …",
+      "opts": [
+        "A. Benar karena banyak orang suka musik.",
+        "B. Salah total karena saya tidak suka musik.",
+        "C. Klaim tersebut terlalu umum; efektivitas dapat berbeda menurut individu, tugas, dan kondisi belajar.",
+        "D. Tidak perlu dibahas.",
+        "E. Semua musik pasti mengganggu."
+      ],
+      "ans": 2,
+      "exp": "Respons yang baik menguji generalisasi dan mempertimbangkan variabel yang relevan."
+    },
+    {
+      "id": "P04",
+      "section": "P",
+      "topic": "Tanggapan, respons, dan kritik",
+      "level": "HOTS",
+      "q": "Sebuah ulasan mengatakan, “Aplikasi ini sempurna karena tampilannya indah.” Kritik paling tepat terhadap alasan itu adalah …",
+      "opts": [
+        "A. Keindahan tampilan tidak pernah penting.",
+        "B. Kesimpulan “sempurna” tidak proporsional karena satu aspek visual belum cukup untuk menilai seluruh kualitas aplikasi.",
+        "C. Aplikasi tidak boleh dinilai.",
+        "D. Tampilan yang indah pasti buruk.",
+        "E. Ulasan harus selalu negatif."
+      ],
+      "ans": 1,
+      "exp": "Argumen melakukan generalisasi berlebihan: satu kelebihan visual tidak cukup untuk menyimpulkan kualitas keseluruhan aplikasi."
+    },
+    {
+      "id": "Q01",
+      "section": "Q",
+      "topic": "Usulan, rumusan masalah, pemecahan masalah",
+      "level": "Mudah",
+      "q": "Rumusan masalah yang paling tepat untuk topik “pengaruh penggunaan gawai terhadap konsentrasi belajar siswa” adalah …",
+      "opts": [
+        "A. Gawai itu penting.",
+        "B. Bagaimana pengaruh durasi penggunaan gawai terhadap konsentrasi belajar siswa?",
+        "C. Siswa harus berhenti memakai gawai.",
+        "D. Gawai membuat semua siswa malas.",
+        "E. Konsentrasi belajar sangat penting."
+      ],
+      "ans": 1,
+      "exp": "Rumusan masalah sebaiknya berbentuk pertanyaan yang jelas, terukur, dan sesuai variabel penelitian."
+    },
+    {
+      "id": "Q02",
+      "section": "Q",
+      "topic": "Usulan, rumusan masalah, pemecahan masalah",
+      "level": "Sedang",
+      "q": "Usulan yang paling sesuai untuk mengatasi rendahnya minat baca di sekolah adalah …",
+      "opts": [
+        "A. Menyalahkan siswa.",
+        "B. Membatasi semua kegiatan selain membaca.",
+        "C. Menambah akses bacaan menarik, waktu baca terjadwal, dan kegiatan tindak lanjut.",
+        "D. Menutup perpustakaan.",
+        "E. Mewajibkan siswa membeli buku mahal."
+      ],
+      "ans": 2,
+      "exp": "Usulan C menyasar akses, kebiasaan, dan penguatan aktivitas membaca secara realistis."
+    },
+    {
+      "id": "Q03",
+      "section": "Q",
+      "topic": "Usulan, rumusan masalah, pemecahan masalah",
+      "level": "Sulit",
+      "q": "Rumusan masalah berikut yang paling spesifik dan dapat diteliti adalah …",
+      "opts": [
+        "A. Mengapa pendidikan penting?",
+        "B. Bagaimana kondisi sekolah?",
+        "C. Bagaimana pengaruh penggunaan kuis digital mingguan terhadap ketepatan jawaban soal kosakata siswa kelas XII selama delapan minggu?",
+        "D. Apakah siswa suka belajar?",
+        "E. Mengapa nilai siswa kadang naik?"
+      ],
+      "ans": 2,
+      "exp": "Pilihan C memiliki subjek, intervensi, variabel hasil, kelompok, dan rentang waktu yang jelas."
+    },
+    {
+      "id": "Q04",
+      "section": "Q",
+      "topic": "Usulan, rumusan masalah, pemecahan masalah",
+      "level": "HOTS",
+      "q": "Sebuah teks akademik menunjukkan masalah: siswa sering salah memahami informasi tersirat. Data juga menunjukkan bahwa latihan yang diberikan hampir seluruhnya berupa soal informasi tersurat. Pemecahan masalah yang paling logis adalah …",
+      "opts": [
+        "A. menambah jumlah soal tersurat saja",
+        "B. mengurangi latihan membaca",
+        "C. merancang latihan bertahap yang membedakan informasi tersurat, inferensi, bukti pendukung, dan pembenaran jawaban",
+        "D. menyalahkan siswa karena kurang teliti",
+        "E. mengganti semua teks menjadi sangat pendek"
+      ],
+      "ans": 2,
+      "exp": "Solusi terbaik langsung menargetkan kesenjangan antara kompetensi yang lemah dan jenis latihan yang selama ini dominan."
+    }
+  ],
+  "sections": {
+    "A": "Intrinsik dalam Cerita",
+    "B": "Jenis Kalimat",
+    "C": "Tanda Koma",
+    "D": "Kalimat Utama & Kalimat Penjelas",
+    "E": "Fakta & Opini",
+    "F": "Majas",
+    "G": "Kata Baku, Tidak Baku & Kata Serapan",
+    "H": "Kalimat Efektif & Tidak Efektif",
+    "I": "Ide Pokok Paragraf",
+    "J": "Sastra Indonesia & Terjemah",
+    "K": "Imbuhan (Afiks)",
+    "L": "Teks Fiksi & Nonfiksi",
+    "M": "Kohesi & Koherensi",
+    "N": "Informasi Tersurat & Tersirat",
+    "O": "Teks Akademik",
+    "P": "Tanggapan, Respons & Kritik",
+    "Q": "Usulan, Rumusan Masalah & Pemecahan Masalah"
+  }
+};
+let bank = DB.questions.slice();
+let current = 0;
+let answers = {};
+let started = false;
+
+const sectionOrder = Object.keys(DB.sections);
+
+function init(){
+  const sf=document.getElementById('sectionFilter');
+  sf.innerHTML='<option value="Semua">Semua bagian</option>'+sectionOrder.map(k=>`<option value="${k}">${k} · ${DB.sections[k]}</option>`).join('');
+  const list=document.getElementById('secList');
+  list.innerHTML=sectionOrder.map(k=>`<button class="secBtn" onclick="chooseSection('${k}')"><span class="letter">${k}</span><span>${DB.sections[k]}</span></button>`).join('');
+  renderEmpty();
+  updateProgress();
+}
+function renderEmpty(){
+  document.getElementById('questionKicker').textContent='TKA · BAHASA INDONESIA';
+  document.getElementById('questionTitle').textContent='Pilih latihan untuk mulai';
+  document.getElementById('qLevel').textContent='—';
+  document.getElementById('qIndex').textContent='0 / '+bank.length;
+  document.getElementById('qTopic').textContent='A–Q • 68 soal';
+  document.getElementById('questionText').textContent='Atur level atau bagian, lalu tekan tombol mulai. Kamu bisa berpindah soal dan kembali lagi sebelum mengumpulkan.';
+  document.getElementById('options').innerHTML='';
+  document.getElementById('answerState').textContent='Belum dimulai.';
+  document.getElementById('resultView').classList.remove('results');
+  document.getElementById('resultView').classList.add('results','hidden');
+  document.getElementById('questionView').classList.remove('hidden');
+}
+function chooseSection(k){
+  document.getElementById('sectionFilter').value=k;
+  document.getElementById('levelFilter').value='Semua';
+  startFiltered();
+}
+function startFiltered(){
+  const lv=document.getElementById('levelFilter').value;
+  const sc=document.getElementById('sectionFilter').value;
+  bank=DB.questions.filter(x=>(lv==='Semua'||x.level===lv)&&(sc==='Semua'||x.section===sc));
+  if(!bank.length){alert('Tidak ada soal yang cocok.');return;}
+  current=0; answers={}; started=true; document.getElementById('questionView').classList.remove('hidden');
+  document.getElementById('resultView').classList.add('hidden'); renderQuestion(); updateProgress();
+}
+function showAll(){
+  document.getElementById('levelFilter').value='Semua';document.getElementById('sectionFilter').value='Semua';
+  startFiltered();
+}
+function renderQuestion(){
+  const q=bank[current];
+  document.getElementById('questionKicker').textContent=`${q.section} · ${DB.sections[q.section]}`;
+  document.getElementById('questionTitle').textContent=`Soal ${current+1}`;
+  document.getElementById('qLevel').textContent=q.level;
+  document.getElementById('qIndex').textContent=`${current+1} / ${bank.length}`;
+  document.getElementById('qTopic').textContent=q.topic;
+  document.getElementById('questionText').textContent=q.q;
+  const saved=answers[q.id];
+  document.getElementById('options').innerHTML=q.opts.map((o,i)=>{
+    const letter=String.fromCharCode(65+i);
+    return `<label class="option"><input type="radio" name="opt" value="${i}" ${saved===i?'checked':''} onchange="saveAnswer(${i})"><strong>${letter}</strong><span>${o.slice(3)}</span></label>`;
+  }).join('');
+  document.getElementById('answerState').textContent=saved===undefined?'Belum dijawab.':'Jawaban tersimpan.';
+  document.getElementById('prevBtn').disabled=current===0;
+  document.getElementById('nextBtn').textContent=current===bank.length-1?'Selesaikan →':'Berikutnya →';
+  document.querySelectorAll('.secBtn').forEach(b=>b.classList.toggle('active',b.innerText.trim().startsWith(q.section)));
+}
+function saveAnswer(i){
+  answers[bank[current].id]=i;
+  document.getElementById('answerState').textContent='Jawaban tersimpan.';
+  updateProgress();
+}
+function nextQ(){
+  if(!started) return startFiltered();
+  if(current<bank.length-1){current++;renderQuestion();window.scrollTo({top:180,behavior:'smooth'});}
+  else finishQuiz();
+}
+function prevQ(){if(current>0){current--;renderQuestion();window.scrollTo({top:180,behavior:'smooth'});}}
+function updateProgress(){
+  const answered=Object.keys(answers).filter(id=>bank.some(q=>q.id===id)).length;
+  document.getElementById('progressText').textContent=`${answered} / ${bank.length}`;
+  document.getElementById('progressBar').style.width=(bank.length?(answered/bank.length*100):0)+'%';
+}
+function finishQuiz(){
+  const unanswered=bank.filter(q=>answers[q.id]===undefined).length;
+  if(unanswered>0 && !confirm(`Masih ada ${unanswered} soal yang belum dijawab. Tetap lihat hasil?`)) return;
+  const correct=bank.filter(q=>answers[q.id]===q.ans).length;
+  const pct=Math.round(correct/bank.length*100);
+  let grade=pct>=90?'Master TKA':pct>=80?'Sangat Baik':pct>=70?'Baik':pct>=60?'Cukup':'Perlu Penguatan';
+  const by={}; sectionOrder.forEach(k=>{by[k]={n:0,c:0};});
+  bank.forEach(q=>{by[q.section].n++;if(answers[q.id]===q.ans)by[q.section].c++;});
+  const weak=Object.entries(by).filter(([k,v])=>v.n>0).sort((a,b)=>(a[1].c/a[1].n)-(b[1].c/b[1].n)).slice(0,5);
+  const review=bank.map(q=>{
+    const ok=answers[q.id]===q.ans;
+    const chosen=answers[q.id]===undefined?'Belum dijawab':q.opts[answers[q.id]];
+    return `<div class="reviewItem ${ok?'ok':'bad'}"><div class="reviewQ">${q.section} · ${q.level} — ${q.q}</div><div class="reviewA"><b>${ok?'✓ Benar':'✗ Perlu diperbaiki'}</b><br>Jawabanmu: ${chosen}<br>Jawaban tepat: ${q.opts[q.ans]}<br><br><b>Cara mendapat jawaban:</b> ${q.exp}</div></div>`;
+  }).join('');
+  const bars=weak.map(([k,v])=>`<div class="barRow"><div class="barRowTop"><span>${k} · ${DB.sections[k]}</span><span>${Math.round(v.c/v.n*100)}%</span></div><div class="bar"><i style="width:${v.c/v.n*100}%"></i></div></div>`).join('');
+  document.getElementById('questionView').classList.add('hidden');
+  const rv=document.getElementById('resultView');rv.classList.remove('hidden');
+  rv.innerHTML=`<div class="resultCard resultHero"><div><div class="kicker">HASIL AKHIR</div><div class="scoreNum">${pct}</div><div class="scoreLabel">${correct} benar dari ${bank.length} soal</div><div class="grade">${grade}</div></div><div class="tiny">Saran belajar: prioritaskan bagian dengan persentase terendah, lalu ulangi soal dan pembahasan. Gunakan tombol reset untuk latihan ulang dengan set yang sama.</div></div>
+  <div class="resultGrid"><div class="resultCard"><h3>Bagian yang perlu diperbaiki</h3>${bars||'<div class="tiny">Belum ada data.</div>'}</div>
+  <div class="resultCard"><h3>Statistik</h3><p class="tiny">Mudah–Sedang–Sulit–HOTS tercampur sesuai filter yang dipilih. Fokus pada pola kesalahan, bukan hanya skor akhir.</p><div class="reviewA"><b>Target berikutnya:</b> ulangi soal yang salah sampai bisa menjelaskan alasan jawabannya tanpa melihat pembahasan.</div></div></div>
+  <div class="resultCard" style="margin-top:18px"><h3>Review semua soal</h3><div class="reviewList">${review}</div></div>`;
+  window.scrollTo({top:120,behavior:'smooth'});
+}
+function resetQuiz(){
+  bank=DB.questions.slice();current=0;answers={};started=false;
+  document.getElementById('levelFilter').value='Semua';document.getElementById('sectionFilter').value='Semua';
+  renderEmpty();updateProgress();window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* =========================
+   EXTENDED QUESTION ENGINE
+   10 soal per level per section
+   ========================= */
+(function expandQuestionBank(){
+  const extra=[];
+  const add=(section,topic,level,q,opts,ans,exp,tag='')=>{
+    extra.push({id:`${section}-X${String(extra.length+1).padStart(3,'0')}`,section,topic,level,q,opts,ans,exp,tag});
+  };
+  const levels=['Mudah','Sedang','Sulit','HOTS'];
+  const data={
+A:[
+ ["Tokoh utama dalam cerita mengambil keputusan untuk meminta maaf setelah menyadari kesalahannya. Unsur yang paling tampak adalah …",["A. amanat","B. latar","C. alur","D. sudut pandang","E. tema"],0,"Keputusan tokoh yang mengandung pesan moral menonjolkan amanat."],
+ ["Dalam kutipan, sebuah desa digambarkan ramai pada pagi hari, kemudian sunyi setelah listrik padam. Unsur yang paling berubah adalah …",["A. tema","B. latar suasana","C. amanat","D. sudut pandang","E. watak"],1,"Ramai dan sunyi menunjukkan perubahan suasana sebagai bagian dari latar."],
+ ["Tokoh yang awalnya egois lalu belajar berbagi mengalami …",["A. perubahan watak","B. perubahan latar","C. pengulangan alur","D. pergantian tema","E. perubahan sudut pandang"],0,"Perubahan sikap tokoh merupakan perkembangan watak."],
+ ["Sebuah cerpen menyimpan petunjuk berupa foto lama yang baru dipahami maknanya pada akhir cerita. Teknik ini terutama membuat pembaca …",["A. kehilangan tokoh","B. melakukan inferensi","C. mengabaikan konflik","D. menghapus latar","E. mengubah tema"],1,"Petunjuk yang maknanya baru terungkap mendorong pembaca menyimpulkan hubungan antarperistiwa."],
+ ["Tokoh pendukung yang selalu menentang keputusan tokoh utama berfungsi terutama untuk …",["A. memperkuat konflik","B. menghapus tema","C. mengubah latar","D. menjadi narator","E. menutup alur"],0,"Tokoh penentang dapat menjadi pemicu atau penguat konflik."],
+ ["Cerita dimulai dari akhir peristiwa lalu kembali menceritakan kejadian sebelumnya. Pola alurnya adalah …",["A. maju","B. mundur","C. campuran","D. linear","E. melingkar"],1,"Penceritaan kembali ke masa lalu menunjukkan alur mundur."],
+ ["Sudut pandang orang pertama ditandai terutama oleh penggunaan …",["A. dia","B. mereka","C. aku","D. ia","E. tokoh itu"],2,"Kata ganti aku/saya lazim menandai pencerita orang pertama."],
+ ["Tema persahabatan paling kuat jika konflik cerita berkaitan dengan …",["A. perselisihan dua sahabat dan usaha memperbaikinya","B. perubahan cuaca","C. harga barang","D. letak sekolah","E. jadwal bus"],0,"Konflik yang berpusat pada hubungan sahabat mendukung tema persahabatan."],
+ ["Jika sebuah benda muncul berulang dan selalu terkait keputusan tokoh, benda tersebut dapat berfungsi sebagai …",["A. simbol","B. daftar pustaka","C. indeks","D. judul bab","E. data statistik"],0,"Benda yang berulang dan memiliki makna khusus dapat menjadi simbol."],
+ ["Akhir cerita yang membuat pembaca menafsirkan sendiri nasib tokoh disebut akhir yang …",["A. terbuka","B. tertutup","C. kronologis","D. ekspositoris","E. objektif"],0,"Akhir terbuka tidak memberikan penyelesaian tunggal secara eksplisit."]
+],
+B:[
+ ["“Kapan rapat itu dimulai?” termasuk kalimat …",["A. deklaratif","B. interogatif","C. imperatif","D. persuasif","E. eksklamatif"],1,"Kalimat tersebut meminta informasi sehingga bersifat interogatif."],
+ ["“Silakan duduk di kursi depan.” termasuk kalimat …",["A. imperatif","B. interogatif","C. deklaratif","D. eksklamatif","E. berita"],0,"Kalimat imperatif dapat berupa perintah, permintaan, atau ajakan."],
+ ["“Mereka menyelesaikan laporan sebelum siang.” termasuk kalimat …",["A. interogatif","B. deklaratif","C. imperatif","D. seruan","E. retoris"],1,"Kalimat deklaratif menyampaikan informasi."],
+ ["“Betapa cepatnya kereta itu!” termasuk kalimat …",["A. deklaratif","B. interogatif","C. eksklamatif","D. imperatif","E. pasif"],2,"Kalimat tersebut mengungkapkan rasa kagum secara kuat."],
+ ["“Jika data lengkap, penelitian dapat dilanjutkan.” merupakan kalimat …",["A. tunggal","B. majemuk bertingkat","C. minor","D. inversi","E. eliptis"],1,"Terdapat anak kalimat bersyarat dan induk kalimat."],
+ ["“Rina membaca dan Dito menulis.” merupakan kalimat …",["A. majemuk setara","B. majemuk bertingkat","C. tunggal","D. minor","E. pasif"],0,"Dua klausa setara dihubungkan oleh konjungsi dan."],
+ ["“Apakah laporan itu sudah dikirim?” memiliki fungsi utama untuk …",["A. memerintah","B. bertanya","C. memuji","D. menyimpulkan","E. menjelaskan"],1,"Bentuk interogatif digunakan untuk memperoleh jawaban."],
+ ["Kalimat “Tolong jangan menyentuh alat itu” paling tepat dikategorikan sebagai …",["A. imperatif larangan/permintaan","B. deklaratif","C. interogatif","D. eksklamatif","E. naratif"],0,"Kata tolong dan jangan menunjukkan permintaan yang bersifat larangan."],
+ ["Kalimat yang memiliki dua klausa dan hubungan sebab adalah …",["A. Ia datang pagi-pagi.","B. Karena hujan, pertandingan ditunda.","C. Mereka membaca buku.","D. Wah, indah sekali!","E. Kapan kamu datang?"],1,"Kalimat B memiliki klausa sebab dan akibat."],
+ ["Perubahan “Kamu sudah selesai?” menjadi “Selesaikan tugasmu!” mengubah fungsi dari …",["A. interogatif menjadi imperatif","B. deklaratif menjadi interogatif","C. imperatif menjadi deklaratif","D. eksklamatif menjadi interogatif","E. pasif menjadi aktif"],0,"Bentuk pertama bertanya, sedangkan bentuk kedua memerintah."]
+],
+C:[
+ ["Penulisan yang tepat adalah …",["A. Oleh karena itu kegiatan dilanjutkan.","B. Oleh karena itu, kegiatan dilanjutkan.","C. Oleh, karena itu kegiatan dilanjutkan.","D. Oleh karena, itu kegiatan dilanjutkan.","E. Oleh karena itu kegiatan, dilanjutkan."],1,"Konjungsi antarkalimat di awal kalimat diikuti koma."],
+ ["Penulisan yang tepat: “Setelah selesai belajar ___ ia beristirahat.”",["A. tanpa koma","B. dengan koma setelah belajar","C. koma setelah ia","D. koma setelah beristirahat","E. dua koma"],1,"Anak kalimat yang mendahului induk kalimat dipisahkan dengan koma."],
+ ["Kalimat yang benar adalah …",["A. Siswa, guru dan orang tua hadir.","B. Siswa, guru, dan orang tua hadir.","C. Siswa guru, dan orang tua hadir.","D. Siswa, guru dan, orang tua hadir.","E. Siswa guru dan orang tua, hadir."],1,"Koma digunakan dalam perincian tiga unsur atau lebih."],
+ ["Koma tidak tepat digunakan untuk memisahkan …",["A. subjek dan predikat","B. unsur perincian","C. anak kalimat di awal","D. penghubung antarkalimat","E. sapaan"],0,"Subjek dan predikat tidak dipisahkan koma tanpa alasan khusus."],
+ ["“Nisa, tolong kumpulkan buku itu.” Koma setelah Nisa berfungsi menandai …",["A. sapaan","B. objek","C. predikat","D. anak kalimat","E. perincian"],0,"Nama orang yang disapa dipisahkan dengan koma."],
+ ["Kalimat yang tepat adalah …",["A. Jika memungkinkan, penelitian dilanjutkan besok.","B. Jika, memungkinkan penelitian dilanjutkan besok.","C. Jika memungkinkan penelitian, dilanjutkan besok.","D. Jika memungkinkan penelitian dilanjutkan, besok.","E. Jika memungkinkan penelitian dilanjutkan besok,"],0,"Keterangan/anak kalimat pembuka dipisahkan dengan koma."],
+ ["Tanda koma paling tepat untuk memperjelas keterangan awal adalah …",["A. Menurut laporan itu, hasil meningkat.","B. Menurut, laporan itu hasil meningkat.","C. Menurut laporan, itu hasil meningkat.","D. Menurut laporan itu hasil, meningkat.","E. Menurut laporan itu hasil meningkat,"],0,"Keterangan pengantar di awal dipisahkan dari inti kalimat dengan koma."],
+ ["Kalimat “Jakarta, 12 Agustus 2026” menggunakan koma untuk memisahkan …",["A. tempat dan tanggal","B. subjek dan predikat","C. objek dan predikat","D. dua klausa","E. kata serapan"],0,"Koma dapat digunakan dalam penulisan tempat dan tanggal surat."],
+ ["Dalam kalimat “Namun, keputusan itu belum final”, koma membantu menandai …",["A. penghubung antarkalimat","B. objek langsung","C. predikat","D. keterangan tempat","E. imbuhan"],0,"Namun di awal kalimat berfungsi sebagai penghubung antarkalimat dan diikuti koma."],
+ ["Perbaikan paling tepat untuk “Peserta yang hadir, mendapat sertifikat” adalah …",["A. Peserta yang hadir mendapat sertifikat.","B. Peserta, yang hadir mendapat sertifikat.","C. Peserta yang, hadir mendapat sertifikat.","D. Peserta yang hadir, mendapat, sertifikat.","E. Peserta, yang hadir, mendapat sertifikat."],0,"Klausa pewatas yang membatasi peserta tidak perlu dipisahkan dari predikat dengan koma."]
+],
+D:[
+ ["Kalimat utama adalah kalimat yang …",["A. memuat gagasan pokok","B. selalu berada di tengah","C. hanya berisi contoh","D. selalu paling panjang","E. selalu berupa pertanyaan"],0,"Kalimat utama memuat gagasan umum yang menjadi dasar pengembangan paragraf."],
+ ["Paragraf dengan gagasan utama di awal disebut …",["A. induktif","B. deduktif","C. naratif","D. kronologis","E. analogi"],1,"Paragraf deduktif menempatkan gagasan utama di awal."],
+ ["Kalimat “Misalnya, sekolah menyediakan tempat sampah terpilah” berfungsi sebagai …",["A. kalimat utama","B. kalimat penjelas","C. judul","D. simpulan utama","E. tesis"],1,"Kata misalnya menandai rincian atau contoh sebagai penjelas."],
+ ["Jika semua kalimat menjelaskan manfaat membaca, kalimat utama sebaiknya berbentuk …",["A. gagasan umum tentang manfaat membaca","B. satu contoh buku","C. satu nama penulis","D. data yang tidak terkait","E. pertanyaan acak"],0,"Gagasan utama harus mencakup rincian yang mengikutinya."],
+ ["Paragraf induktif biasanya bergerak dari …",["A. khusus ke umum","B. umum ke khusus","C. judul ke penutup","D. pertanyaan ke pertanyaan","E. sebab ke kata"],0,"Induktif mengumpulkan rincian lalu menuju simpulan umum."],
+ ["Kalimat penjelas yang baik harus …",["A. mendukung gagasan utama","B. bertentangan tanpa alasan","C. tidak berhubungan","D. mengganti topik","E. mengulang judul saja"],0,"Kalimat penjelas memperinci atau mendukung gagasan utama."],
+ ["Jika kalimat terakhir merangkum seluruh uraian sebelumnya, paragraf tersebut cenderung …",["A. induktif","B. deduktif murni","C. tanpa gagasan","D. deskriptif saja","E. fragmentaris"],0,"Simpulan di akhir merupakan ciri umum paragraf induktif."],
+ ["Kalimat utama yang paling tepat untuk rincian tentang aplikasi perpustakaan adalah …",["A. Digitalisasi perpustakaan meningkatkan kemudahan layanan.","B. Siswa mengeklik tombol pencarian.","C. Buku A tersedia hari ini.","D. Petugas memakai komputer.","E. Ada 12 buku baru."],0,"Pilihan A paling umum dan menaungi rincian lainnya."],
+ ["Hubungan data dengan kalimat utama dalam paragraf argumentatif biasanya sebagai …",["A. bukti atau penjelas","B. judul","C. sapaan","D. konflik","E. latar"],0,"Data mendukung klaim atau gagasan utama."],
+ ["Jika sebuah kalimat terlalu sempit untuk mencakup semua rincian paragraf, kalimat tersebut kemungkinan adalah …",["A. kalimat penjelas","B. gagasan utama","C. judul utama","D. tesis umum","E. simpulan universal"],0,"Kalimat yang hanya mencakup satu rincian biasanya berfungsi sebagai penjelas."]
+],
+E:[
+ ["Pernyataan yang dapat diverifikasi adalah …",["A. Air membeku pada 0°C pada kondisi tertentu.","B. Film itu paling bagus.","C. Kota itu sangat nyaman.","D. Menurut saya buku itu menarik.","E. Sekolah itu pasti terbaik."],0,"Pernyataan ilmiah dapat diuji atau diverifikasi."],
+ ["Kata yang sering menandai opini adalah …",["A. menurut saya","B. sebanyak","C. tercatat","D. berjumlah","E. pada tanggal"],0,"Menurut saya secara eksplisit menunjukkan sudut pandang."],
+ ["“Sebanyak 45 siswa mengikuti lomba.” termasuk …",["A. fakta","B. opini","C. saran","D. prediksi","E. kritik"],0,"Jumlah peserta merupakan informasi yang dapat diverifikasi."],
+ ["“Program itu tampaknya lebih efektif.” termasuk …",["A. opini","B. fakta mutlak","C. definisi","D. data primer","E. kronologi"],0,"Kata tampaknya menunjukkan penilaian atau dugaan."],
+ ["Pernyataan yang merupakan opini berbasis data adalah …",["A. 70% responden memilih A, sehingga program itu tampak menjanjikan.","B. Survei dilakukan selama tiga hari.","C. Ada 200 responden.","D. Responden berasal dari empat kelas.","E. Data dikumpulkan pada Mei."],0,"Data mendasari penilaian “tampak menjanjikan”, tetapi penilaian itu tetap opini."],
+ ["Mengapa fakta dan opini perlu dibedakan dalam artikel? …",["A. agar pembaca mengetahui mana informasi yang dapat diverifikasi dan mana penilaian","B. agar semua pendapat dianggap salah","C. agar data dihapus","D. agar artikel menjadi fiksi","E. agar opini menjadi fakta"],0,"Pembedaan membantu pembaca menilai kekuatan informasi."],
+ ["“Seharusnya sekolah menyediakan lebih banyak ruang baca” adalah …",["A. opini/saran","B. fakta statistik","C. definisi","D. hasil observasi langsung","E. data numerik"],0,"Seharusnya menunjukkan usulan atau penilaian."],
+ ["Sebuah artikel menyatakan “100 siswa hadir” lalu “kehadiran itu luar biasa.” Pernyataan kedua adalah …",["A. opini","B. fakta","C. data mentah","D. definisi","E. kutipan statistik"],0,"“Luar biasa” merupakan penilaian subjektif."],
+ ["Klaim “semua siswa menyukai program” paling lemah jika hanya didukung oleh …",["A. survei terhadap 10 siswa","B. data seluruh siswa","C. wawancara terstruktur","D. rekap kehadiran","E. survei representatif"],0,"Sampel kecil tidak otomatis mewakili seluruh siswa."],
+ ["Dalam membaca artikel, sikap paling tepat terhadap opini adalah …",["A. menilai alasan dan bukti yang mendukungnya","B. langsung mempercayainya","C. selalu menolaknya","D. menganggapnya fakta","E. mengabaikan seluruh artikel"],0,"Opini dapat dipertimbangkan berdasarkan kualitas alasan dan bukti."]
+],
+F:[
+ ["“Daun-daun menari tertiup angin” menggunakan …",["A. personifikasi","B. litotes","C. ironi","D. metonimia","E. repetisi"],0,"Daun diberi kemampuan manusia untuk menari."],
+ ["“Suaranya menggelegar membelah langit” terutama menggunakan …",["A. hiperbola","B. litotes","C. sinekdoke","D. eufemisme","E. ironi"],0,"Ungkapan tersebut melebih-lebihkan efek suara."],
+ ["“Dia adalah tulang punggung keluarga” merupakan …",["A. metafora","B. personifikasi","C. hiperbola murni","D. repetisi","E. antitesis"],0,"Tulang punggung dipakai sebagai perbandingan langsung untuk penopang keluarga."],
+ ["“Wah, rajin sekali kamu, datang setelah acara selesai.” termasuk …",["A. ironi","B. metafora","C. personifikasi","D. litotes","E. klimaks"],0,"Pujian di permukaan digunakan untuk menyindir keterlambatan."],
+ ["“Aku hanya siswa kecil yang belum seberapa” dapat mengandung …",["A. litotes","B. hiperbola","C. personifikasi","D. metonimia","E. repetisi"],0,"Litotes merendahkan diri untuk menunjukkan kerendahan hati."],
+ ["“Ia berlari secepat kilat” merupakan …",["A. perbandingan/simile","B. personifikasi","C. ironi","D. metonimia","E. litotes"],0,"Ada perbandingan eksplisit menggunakan secepat."],
+ ["Fungsi majas dalam karya sastra terutama untuk …",["A. memperkuat daya ungkap dan imajinasi","B. menghilangkan makna","C. membuat semua kalimat ilmiah","D. menghapus emosi","E. mengganti fakta"],0,"Majas memperkaya cara penyampaian makna dan efek estetis."],
+ ["Jika benda mati diberi kemampuan berbicara, majas yang paling mungkin digunakan adalah …",["A. personifikasi","B. hiperbola","C. litotes","D. ironi","E. antitesis"],0,"Personifikasi memberi sifat manusia kepada benda atau alam."],
+ ["“Lautan manusia memenuhi lapangan” dapat dipahami sebagai …",["A. metafora","B. personifikasi","C. litotes","D. eufemisme","E. repetisi"],0,"Lautan digunakan secara kias untuk menggambarkan jumlah manusia yang sangat banyak."],
+ ["Penggunaan majas yang tepat harus mempertimbangkan …",["A. konteks dan efek makna","B. jumlah huruf saja","C. panjang paragraf saja","D. tanda baca saja","E. jumlah tokoh"],0,"Majas harus sesuai konteks agar efek kiasannya tepat."]
+],
+G:[
+ ["Bentuk baku yang tepat adalah …",["A. praktik","B. praktek","C. praktekkan","D. aktip","E. resiko"],0,"Bentuk baku yang tepat adalah praktik."],
+ ["Bentuk baku dari “ijin” adalah …",["A. izin","B. ijinan","C. idzin","D. izinan","E. ijin"],0,"Bentuk bakunya adalah izin."],
+ ["Bentuk baku dari “aktifitas” adalah …",["A. aktivitas","B. aktifitas","C. aktifvitas","D. aktivfitas","E. aktipitas"],0,"Bentuk baku yang sesuai adalah aktivitas."],
+ ["Bentuk baku yang tepat adalah …",["A. kualitas","B. kwalitas","C. kwalitet","D. kualitasnyaa","E. kuwalitas"],0,"Kata baku dalam bahasa Indonesia adalah kualitas."],
+ ["Kata “analisis” digunakan sebagai …",["A. nomina","B. verba berimbuhan","C. konjungsi","D. preposisi","E. pronomina"],0,"Analisis merupakan nomina; verba bakunya adalah menganalisis."],
+ ["Kalimat yang tepat adalah …",["A. Tim menganalisis data sebelum membuat kesimpulan.","B. Tim menganalisa data sebelum membuat kesimpulan.","C. Tim menganalisis-kan data.","D. Tim analisa data.","E. Tim menganalisa-kan hasil."],0,"Verba baku yang tepat adalah menganalisis."],
+ ["Bentuk serapan yang telah dibakukan adalah …",["A. risiko","B. resiko","C. resikho","D. risko","E. resikhoh"],0,"Risiko merupakan bentuk baku."],
+ ["Dalam tulisan ilmiah, kata asing yang sudah memiliki padanan baku sebaiknya …",["A. menggunakan padanan baku yang sesuai konteks","B. selalu ditulis dengan slang","C. dihapus","D. diganti secara acak","E. dibiarkan salah"],0,"Penggunaan bentuk baku meningkatkan ketepatan bahasa ilmiah."],
+ ["Koma pada daftar “buku, majalah, dan jurnal” berfungsi untuk …",["A. memisahkan unsur perincian","B. memisahkan subjek-predikat","C. menandai afiks","D. mengubah kata serapan","E. menandai kalimat tanya"],0,"Koma digunakan dalam perincian."],
+ ["Perbaikan “efektifitas program” adalah …",["A. efektivitas program","B. efektifitas program","C. efektifan program","D. efektipitas program","E. efektivitaskan program"],0,"Bentuk bakunya adalah efektivitas."]
+],
+H:[
+ ["Kalimat efektif harus menghindari …",["A. pemborosan kata","B. kejelasan","C. kepaduan","D. ketepatan","E. kelogisan"],0,"Pemborosan kata dapat membuat kalimat tidak efektif."],
+ ["Perbaikan “Para siswa-siswa belajar” adalah …",["A. Para siswa belajar.","B. Para siswa-siswa belajar.","C. Siswa-siswa para belajar.","D. Para semuanya siswa belajar.","E. Para siswa belajar semuanya bersama-sama."],0,"Para sudah menyatakan jamak sehingga bentuk ulang tidak diperlukan."],
+ ["Kalimat efektif adalah …",["A. Ia membaca buku di perpustakaan.","B. Ia membaca buku di perpustakaan yang ada di perpustakaan sekolah itu.","C. Ia membaca buku-buku semuanya.","D. Ia pada akhirnya akhirnya datang.","E. Ia masuk ke dalam ke kelas."],0,"Pilihan A ringkas, jelas, dan tidak berlebihan."],
+ ["Kalimat “Mereka saling bekerja sama” kurang efektif karena …",["A. makna saling dan bekerja sama dapat tumpang tindih","B. tidak ada subjek","C. tidak ada predikat","D. memakai kata baku","E. terlalu singkat"],0,"Saling sudah menunjukkan hubungan timbal balik sehingga dapat diringkas menjadi “Mereka bekerja sama”."],
+ ["Perbaikan “Tujuan daripada penelitian ini adalah untuk mengetahui…” yang lebih efektif adalah …",["A. Tujuan penelitian ini adalah mengetahui…","B. Tujuan daripada penelitian ini adalah untuk mengetahui…","C. Tujuan penelitian adalah untuk agar mengetahui…","D. Tujuannya daripada penelitian ini untuk mengetahui…","E. Tujuan ini adalah untuk agar penelitian mengetahui…"],0,"Kata daripada dan untuk dapat dihilangkan tanpa kehilangan makna inti."],
+ ["Kalimat efektif harus memiliki hubungan antargagasan yang …",["A. logis","B. acak","C. bertentangan tanpa penanda","D. tidak jelas","E. berulang"],0,"Kelogisan merupakan salah satu syarat kalimat efektif."],
+ ["“Hasil penelitian menunjukkan bahwa bahwa minat baca meningkat.” Perbaikannya …",["A. Hasil penelitian menunjukkan bahwa minat baca meningkat.","B. Hasil penelitian menunjukkan bahwa bahwa minat baca meningkat.","C. Hasil penelitian menunjukkan minat baca bahwa meningkat.","D. Hasil penelitian bahwa menunjukkan meningkat.","E. Hasil penelitian menunjukkan meningkat bahwa."],0,"Kata bahwa yang berulang cukup digunakan satu kali."],
+ ["Kalimat yang paling hemat adalah …",["A. Ia masuk kelas.","B. Ia masuk ke dalam kelas.","C. Ia masuk masuk ke kelas.","D. Ia masuk ke dalam ke kelas.","E. Ia memasuki ke dalam kelas."],0,"“Masuk kelas” sudah jelas dan hemat."],
+ ["Kalimat “Berdasarkan data, maka kesimpulan dibuat” dapat diperbaiki menjadi …",["A. Berdasarkan data, kesimpulan dibuat.","B. Berdasarkan data, maka kesimpulan dibuat.","C. Berdasarkan, data maka kesimpulan dibuat.","D. Data berdasarkan maka kesimpulan dibuat.","E. Kesimpulan berdasarkan, data dibuat."],0,"Kata maka tidak diperlukan setelah konstruksi berdasarkan data."],
+ ["Kalimat efektif perlu mempertahankan …",["A. kesepadanan struktur dan ketepatan makna","B. sebanyak mungkin kata","C. pengulangan","D. slang","E. ambiguitas"],0,"Efektivitas menuntut struktur yang sepadan dan makna yang jelas."]
+],
+I:[
+ ["Ide pokok adalah …",["A. inti pembahasan paragraf","B. contoh paling kecil","C. kata terakhir","D. judul buku","E. kalimat acak"],0,"Ide pokok merupakan inti yang dibahas dalam paragraf."],
+ ["Kalimat-kalimat tentang manfaat olahraga paling mungkin memiliki ide pokok …",["A. manfaat olahraga bagi kesehatan","B. satu jenis sepatu","C. jadwal pertandingan","D. nama atlet","E. warna lapangan"],0,"Pilihan A merangkum pembahasan secara umum."],
+ ["Jika paragraf dimulai dengan gagasan umum lalu memberi tiga contoh, polanya …",["A. deduktif","B. induktif","C. campuran","D. dialogis","E. fragmentaris"],0,"Gagasan umum di awal diikuti rincian menunjukkan pola deduktif."],
+ ["Untuk menemukan ide pokok, pembaca sebaiknya …",["A. memperhatikan gagasan yang menaungi rincian","B. memilih kalimat terpanjang","C. memilih kalimat pertama tanpa membaca","D. memilih angka terbesar","E. memilih kata yang paling sering saja"],0,"Ide pokok harus mencakup hubungan seluruh rincian."],
+ ["Jika semua kalimat mendukung gagasan “penggunaan air harus hemat”, ide pokok yang tepat adalah …",["A. pentingnya menghemat air","B. satu kran bocor","C. harga air","D. warna air","E. nama sungai"],0,"Pilihan A paling umum dan mencakup rincian."],
+ ["Ide pokok dan topik berbeda karena …",["A. topik berupa pokok bahasan, ide pokok berupa gagasan utama tentang topik","B. keduanya selalu identik","C. topik selalu berupa simpulan","D. ide pokok selalu satu kata","E. topik selalu berada di akhir"],0,"Ide pokok biasanya berupa pernyataan gagasan tentang topik."],
+ ["Paragraf yang memberikan beberapa fakta lalu menyimpulkan gagasan pada akhir cenderung …",["A. induktif","B. deduktif","C. dialog","D. narasi murni","E. prosedural"],0,"Simpulan di akhir merupakan pola induktif."],
+ ["Kalimat yang terlalu spesifik biasanya berfungsi sebagai …",["A. penjelas","B. gagasan umum","C. judul utama","D. tesis universal","E. tema"],0,"Rincian spesifik biasanya mendukung gagasan yang lebih umum."],
+ ["Ide pokok harus …",["A. dapat menaungi rincian utama","B. selalu berupa data","C. selalu berupa opini","D. selalu berada di awal","E. selalu satu kata"],0,"Ide pokok dapat berada di berbagai posisi dan harus mencakup isi paragraf."],
+ ["Jika sebuah pilihan hanya membahas satu contoh, sementara paragraf membahas lima contoh, pilihan itu …",["A. terlalu sempit sebagai ide pokok","B. pasti ide pokok","C. pasti judul","D. pasti simpulan","E. pasti tesis"],0,"Ide pokok harus mencakup keseluruhan pembahasan, bukan satu contoh saja."]
+],
+J:[
+ ["“Character” dalam kajian sastra paling tepat diterjemahkan sebagai …",["A. tokoh/karakter","B. latar","C. alur","D. amanat","E. tema"],0,"Character dapat berarti tokoh atau karakter sesuai konteks."],
+ ["“Plot” dalam kajian sastra berarti …",["A. alur","B. latar","C. tema","D. amanat","E. gaya"],0,"Plot merujuk pada rangkaian peristiwa atau alur."],
+ ["“Theme” paling tepat diterjemahkan sebagai …",["A. tema","B. tokoh","C. latar","D. konflik","E. sudut pandang"],0,"Theme berarti tema."],
+ ["Terjemahan “He looked worried” yang paling alami adalah …",["A. Ia tampak khawatir.","B. Ia melihat khawatir.","C. Ia terlihat mengkhawatir.","D. Ia pandang khawatir.","E. Ia memandang kecemasan."],0,"Terjemahan mempertahankan makna dan kewajaran struktur bahasa Indonesia."],
+ ["Dalam terjemahan sastra, idiom sebaiknya …",["A. diterjemahkan berdasarkan makna dan konteks","B. selalu kata demi kata","C. dihapus","D. diganti sembarang","E. diterjemahkan menjadi istilah ilmiah"],0,"Idiom sering memiliki makna yang tidak sama dengan jumlah arti kata penyusunnya."],
+ ["“The room was silent” dapat diterjemahkan secara alami menjadi …",["A. Ruangan itu sunyi.","B. Ruangan itu adalah diam.","C. Ruangan itu menyunyi.","D. Ruangan itu membisu secara ruangan.","E. Ruangan itu keheningan."],0,"Pilihan A alami dan setara secara makna."],
+ ["Mengapa konteks penting dalam penerjemahan? …",["A. satu kata dapat memiliki makna berbeda sesuai konteks","B. semua kata memiliki satu arti","C. konteks tidak memengaruhi makna","D. tata bahasa tidak penting","E. penerjemahan tidak memerlukan pembacaan"],0,"Konteks menentukan makna kata dan ungkapan."],
+ ["Terjemahan yang terlalu harfiah dapat …",["A. terdengar tidak alami atau mengubah nuansa","B. selalu lebih akurat","C. selalu lebih puitis","D. menghilangkan semua kesalahan","E. menjadi fakta"],0,"Terjemahan harfiah tidak selalu cocok dengan struktur dan idiom bahasa sasaran."],
+ ["Dalam sastra, “tone” paling dekat dengan …",["A. nada/sikap pengarang dalam penyampaian","B. alur","C. latar","D. tokoh","E. konflik"],0,"Tone berkaitan dengan sikap atau nuansa penyampaian."],
+ ["Penerjemah yang baik harus menjaga …",["A. makna, konteks, dan kewajaran bahasa sasaran","B. jumlah kata secara mutlak","C. urutan kata tanpa perubahan","D. kesamaan bunyi","E. panjang kalimat saja"],0,"Kesepadanan makna dan kewajaran lebih penting daripada kesamaan bentuk kata demi kata."]
+],
+K:[
+ ["Kata “membaca” mendapat prefiks …",["A. meN-","B. ber-","C. di-","D. pe-","E. ter-"],0,"Membaca dibentuk dengan prefiks meN- pada dasar baca."],
+ ["Kata “ditulis” memiliki afiks …",["A. di-","B. meN-","C. ber-","D. pe-","E. se-"],0,"Di- pada ditulis membentuk verba pasif."],
+ ["Kata “pelari” dibentuk dengan afiks yang menghasilkan makna …",["A. orang yang melakukan aktivitas lari","B. tempat berlari","C. alat berlari","D. hasil lari","E. waktu lari"],0,"Pe- pada konteks ini membentuk nomina pelaku."],
+ ["Kata “makanan” menggunakan …",["A. -an","B. me-","C. di-","D. ber-","E. ter-"],0,"Makanan mengandung sufiks -an dan bermakna sesuatu yang dimakan."],
+ ["Kata “keindahan” termasuk nomina abstrak yang berkaitan dengan …",["A. keadaan/sifat indah","B. pelaku indah","C. alat indah","D. tempat indah","E. tindakan mengindah"],0,"Ke-an pada keindahan membentuk nomina abstrak."],
+ ["Perubahan “ajar” menjadi “pelajar” menghasilkan makna …",["A. orang yang belajar","B. tempat belajar","C. hasil belajar","D. alat belajar","E. kegiatan belajar"],0,"Pe- pada pelajar membentuk nomina pelaku."],
+ ["“Menjelaskan” menunjukkan proses pembentukan kata yang menghasilkan …",["A. verba aktif","B. nomina tempat","C. adjektiva","D. pronomina","E. konjungsi"],0,"MeN-kan pada menjelaskan membentuk verba aktif."],
+ ["“Kebersihan” bermakna …",["A. keadaan bersih","B. orang yang bersih","C. alat membersihkan","D. tempat bersih","E. tindakan bersih"],0,"Ke-an pada kebersihan membentuk nomina abstrak keadaan."],
+ ["Jika afiks mengubah kelas kata dasar, pembaca perlu memperhatikan …",["A. bentuk dan makna setelah afiksasi","B. jumlah suku kata saja","C. huruf kapital saja","D. tanda tanya","E. panjang paragraf"],0,"Analisis afiks mencakup bentuk dan perubahan makna/fungsi."],
+ ["“Perbaikan” dan “memperbaiki” berbeda terutama karena …",["A. bentuk dan fungsi katanya berbeda","B. keduanya selalu nomina","C. keduanya selalu verba","D. tidak memiliki afiks","E. hanya berbeda tanda baca"],0,"Perbaikan merupakan nomina, sedangkan memperbaiki merupakan verba."]
+],
+L:[
+ ["Cerpen termasuk fiksi karena …",["A. membangun cerita rekaan","B. selalu berisi statistik","C. wajib memakai sumber ilmiah","D. tidak memiliki konflik","E. hanya berisi fakta"],0,"Cerpen merupakan karya fiksi yang mengembangkan cerita rekaan."],
+ ["Laporan hasil observasi termasuk nonfiksi karena …",["A. menyajikan informasi berdasarkan objek yang diamati","B. selalu memakai tokoh khayalan","C. bebas mengubah data","D. tidak membutuhkan struktur","E. hanya berupa dialog"],0,"Laporan observasi bersumber pada objek/informasi yang diamati."],
+ ["Novel yang menggabungkan tokoh nyata dengan peristiwa rekaan tetap dapat dikategorikan sebagai …",["A. fiksi","B. laporan ilmiah","C. berita murni","D. kamus","E. petunjuk teknis"],0,"Pengembangan peristiwa rekaan menjadikannya karya fiksi."],
+ ["Ensiklopedia terutama bertujuan …",["A. menyajikan informasi referensial","B. membangun konflik tokoh","C. membuat alur dramatis","D. menghibur melalui dialog","E. menyamarkan fakta"],0,"Ensiklopedia merupakan sumber informasi nonfiksi."],
+ ["Fiksi dapat terinspirasi peristiwa nyata, tetapi …",["A. pengarang dapat mengembangkan unsur imajinatif","B. semua detail otomatis fakta","C. tidak boleh ada tokoh nyata","D. harus menjadi berita","E. tidak boleh memakai latar nyata"],0,"Fiksi dapat mengolah kenyataan dengan imajinasi."],
+ ["Saat menemukan klaim ilmiah dalam novel, pembaca sebaiknya …",["A. memverifikasinya pada sumber tepercaya","B. langsung menganggap benar","C. langsung menganggap salah","D. mengabaikan seluruh novel","E. hanya melihat sampul"],0,"Status fiksi tidak menjamin semua klaim faktual di dalamnya benar."],
+ ["Perbedaan utama fiksi dan nonfiksi berkaitan dengan …",["A. tujuan dan cara penyajian informasi/cerita","B. jumlah halaman","C. ukuran huruf","D. warna sampul","E. jumlah paragraf"],0,"Keduanya dibedakan terutama dari karakter penyajian dan hubungan dengan fakta/rekaan."],
+ ["Memoar termasuk nonfiksi ketika …",["A. merujuk pada pengalaman hidup penulis","B. seluruh peristiwa dibuat tanpa dasar","C. tokohnya tidak pernah ada","D. tidak memiliki pengalaman nyata","E. hanya berisi dialog khayalan"],0,"Memoar berangkat dari pengalaman hidup penulis."],
+ ["Fiksi sejarah memerlukan kehati-hatian karena …",["A. pembaca dapat mengira unsur rekaan sebagai fakta sejarah","B. fiksi tidak boleh berlatar sejarah","C. sejarah selalu fiksi","D. semua dialog pasti asli","E. tokoh nyata tidak boleh disebut"],0,"Pembaca perlu membedakan fakta sejarah dan pengembangan imajinatif."],
+ ["Teks nonfiksi yang baik tetap dapat memiliki gaya menarik, tetapi …",["A. informasi faktual harus dipertanggungjawabkan","B. fakta boleh diubah","C. sumber tidak diperlukan","D. data boleh direka","E. semua pendapat dianggap fakta"],0,"Kemenarikan tidak menghapus tuntutan ketepatan informasi."]
+],
+M:[
+ ["Kata “ini” yang merujuk pada benda sebelumnya merupakan contoh …",["A. kohesi referensial","B. konflik","C. tema","D. latar","E. majas"],0,"Kata rujukan menghubungkan unsur dalam teks."],
+ ["Konjungsi “tetapi” menandai hubungan …",["A. pertentangan","B. penambahan","C. waktu","D. simpulan","E. tujuan"],0,"Tetapi menunjukkan kontras."],
+ ["Konjungsi “karena” menandai hubungan …",["A. sebab","B. pertentangan","C. penambahan","D. pilihan","E. simpulan"],0,"Karena memperkenalkan alasan atau sebab."],
+ ["Konjungsi “kemudian” umumnya menandai …",["A. urutan waktu","B. pertentangan","C. definisi","D. sebab","E. perbandingan"],0,"Kemudian menunjukkan urutan peristiwa."],
+ ["Koherensi berkaitan terutama dengan …",["A. keterpaduan makna dan logika","B. tanda baca saja","C. jumlah kata","D. bentuk huruf","E. panjang judul"],0,"Koherensi membuat gagasan saling logis."],
+ ["Kohesi dapat dibentuk melalui …",["A. kata rujukan dan konjungsi","B. warna teks","C. ukuran halaman","D. judul buku saja","E. jumlah paragraf"],0,"Kohesi berkaitan dengan perangkat kebahasaan pengikat teks."],
+ ["Paragraf dengan konjungsi lengkap tetapi gagasannya meloncat-loncat mengalami masalah …",["A. koherensi","B. ejaan saja","C. afiksasi","D. majas","E. tipografi"],0,"Kohesi tidak otomatis menjamin koherensi."],
+ ["Urutan ide yang logis membuat paragraf lebih …",["A. koheren","B. ambigu","C. fragmentaris","D. tidak efektif","E. acak"],0,"Urutan logis memperkuat keterpaduan makna."],
+ ["Pengulangan kata kunci secara wajar dapat membantu …",["A. kohesi leksikal","B. perubahan tema","C. penghilangan subjek","D. pembentukan majas","E. tanda koma"],0,"Repetisi leksikal dapat mengikat topik antarkalimat."],
+ ["Jika kalimat kedua tidak memiliki hubungan logis dengan kalimat pertama, perbaikannya dapat dilakukan dengan …",["A. menata ulang atau menambahkan hubungan gagasan yang relevan","B. menambah kata acak","C. menghapus semua konjungsi","D. mengganti semua kata benda","E. memperpanjang kalimat"],0,"Koherensi membutuhkan hubungan makna yang relevan, bukan sekadar penambahan kata."]
+],
+N:[
+ ["Informasi tersurat adalah informasi yang …",["A. dinyatakan langsung dalam teks","B. hanya dapat ditebak","C. bertentangan dengan teks","D. berasal dari luar teks","E. selalu berupa opini"],0,"Tersurat berarti dinyatakan secara eksplisit."],
+ ["Informasi tersirat diperoleh melalui …",["A. inferensi berdasarkan petunjuk teks","B. menebak tanpa dasar","C. mengabaikan teks","D. melihat judul saja","E. memilih jawaban terpanjang"],0,"Tersirat membutuhkan penalaran berdasarkan bukti dalam teks."],
+ ["“Lampu ruang kelas masih menyala ketika penjaga pulang.” Inferensi yang wajar adalah …",["A. ada kemungkinan seseorang masih menggunakan ruangan","B. pasti ada pencuri","C. sekolah pasti kosong","D. listrik pasti padam","E. penjaga lupa sekolah"],0,"Lampu menyala menjadi petunjuk kemungkinan penggunaan ruang, tetapi tidak membuktikan siapa yang berada di sana."],
+ ["Inferensi yang baik harus …",["A. didukung petunjuk teks","B. berdasarkan khayalan pembaca","C. selalu mutlak","D. tidak memerlukan bukti","E. bertentangan dengan teks"],0,"Inferensi harus memiliki dasar tekstual."],
+ ["Jika teks menyebut penjualan meningkat setelah promosi, simpulan paling hati-hati adalah …",["A. promosi mungkin berkaitan dengan peningkatan penjualan","B. promosi pasti satu-satunya penyebab","C. semua pembeli menyukai promosi","D. penjualan pasti meningkat selamanya","E. produk pasti terbaik"],0,"Data menunjukkan hubungan, tetapi tidak otomatis membuktikan sebab tunggal."],
+ ["Informasi “perpustakaan buka pukul 07.00” termasuk …",["A. tersurat","B. tersirat","C. opini","D. inferensi","E. prediksi"],0,"Waktu buka dinyatakan langsung."],
+ ["Kesimpulan yang terlalu jauh dari bukti disebut …",["A. overgeneralisasi","B. kohesi","C. afiksasi","D. deskripsi","E. definisi"],0,"Overgeneralisasi melampaui cakupan bukti yang tersedia."],
+ ["Jika tokoh membawa payung dan mengenakan jas hujan, inferensi paling aman adalah …",["A. ia mengantisipasi hujan","B. hujan pasti turun sepanjang hari","C. ia sedang sakit","D. ia takut petir","E. ia akan bepergian jauh"],0,"Perlengkapan tersebut mendukung inferensi tentang antisipasi hujan, tanpa memastikan hal lain."],
+ ["Untuk menjawab pertanyaan tersirat, pembaca perlu …",["A. menggabungkan beberapa petunjuk","B. hanya menyalin satu kalimat","C. memilih kata yang paling panjang","D. mengabaikan konteks","E. mencari opini pribadi"],0,"Informasi tersirat sering muncul dari hubungan beberapa informasi."],
+ ["Jika teks tidak memberi bukti cukup untuk suatu kesimpulan, jawaban terbaik adalah …",["A. tidak membuat kesimpulan yang melampaui bukti","B. tetap menyatakan pasti","C. memilih jawaban paling dramatis","D. mengarang bukti","E. mengabaikan semua informasi"],0,"Pembaca perlu menjaga batas inferensi sesuai bukti."]
+],
+O:[
+ ["Bahasa akademik sebaiknya …",["A. formal, logis, dan tepat","B. penuh slang","C. emosional tanpa bukti","D. ambigu","E. bebas sumber"],0,"Teks akademik menuntut ketepatan dan kelogisan."],
+ ["Dalam karya ilmiah, data sebaiknya …",["A. disertai sumber dan konteks","B. tanpa sumber","C. dipilih karena angkanya besar","D. diubah agar sesuai argumen","E. selalu berbentuk opini"],0,"Sumber dan konteks membantu pembaca menilai validitas data."],
+ ["Pernyataan akademik yang paling hati-hati adalah …",["A. Data menunjukkan kecenderungan peningkatan.","B. Ini pasti membuktikan semua siswa.","C. Program ini jelas sempurna.","D. Semua orang pasti setuju.","E. Pokoknya hasilnya bagus."],0,"Bahasa akademik menghindari klaim berlebihan."],
+ ["Tujuan sitasi dalam teks akademik antara lain …",["A. menunjukkan sumber gagasan/data","B. memperpanjang tulisan tanpa fungsi","C. mengganti analisis","D. membuat tulisan fiksi","E. menghilangkan bukti"],0,"Sitasi memberi atribusi dan membantu verifikasi sumber."],
+ ["Argumen akademik yang kuat membutuhkan …",["A. klaim, alasan, dan bukti yang relevan","B. emosi saja","C. kata-kata sulit","D. klaim tanpa data","E. pengulangan"],0,"Argumen perlu didukung alasan dan bukti."],
+ ["Judul penelitian yang baik sebaiknya …",["A. mencerminkan fokus penelitian","B. dibuat sangat umum tanpa fokus","C. berupa slogan","D. penuh slang","E. tidak berkaitan dengan isi"],0,"Judul harus merepresentasikan fokus utama."],
+ ["Kalimat “Hasil ini membuktikan secara mutlak bahwa…” perlu diperiksa karena …",["A. klaim mutlak mungkin melampaui kekuatan bukti","B. kata hasil selalu salah","C. akademik tidak boleh memakai data","D. kalimat terlalu pendek","E. semua kesimpulan harus mutlak"],0,"Kekuatan klaim harus sebanding dengan bukti."],
+ ["Dalam teks akademik, definisi istilah diperlukan ketika …",["A. istilah dapat memiliki makna khusus atau ambigu","B. semua istilah sudah pasti dipahami","C. penulis ingin memperpanjang tulisan","D. data tidak ada","E. paragraf terlalu pendek"],0,"Definisi membantu menjaga ketepatan konsep."],
+ ["Sumber yang kredibel penting karena …",["A. mendukung keterlacakan dan keandalan informasi","B. membuat tulisan otomatis benar","C. menghilangkan kebutuhan berpikir","D. membuat semua opini menjadi fakta","E. mengganti kesimpulan"],0,"Kredibilitas sumber memperkuat dasar informasi, tetapi tetap perlu dinilai."],
+ ["Kesimpulan akademik sebaiknya …",["A. menjawab tujuan berdasarkan hasil dan tidak melampaui data","B. memperkenalkan fakta baru tanpa pembahasan","C. memakai bahasa emosional","D. mengulang seluruh artikel","E. membuat klaim universal tanpa bukti"],0,"Kesimpulan harus konsisten dengan tujuan, hasil, dan batas penelitian."]
+],
+P:[
+ ["Tanggapan yang baik terhadap sebuah gagasan sebaiknya …",["A. relevan dan disertai alasan","B. menyerang pribadi","C. tanpa dasar","D. keluar topik","E. hanya memuji"],0,"Tanggapan yang berkualitas berfokus pada gagasan dan alasan."],
+ ["Kritik yang konstruktif sebaiknya …",["A. menunjukkan kelemahan sekaligus memberi alasan atau saran","B. menghina penulis","C. hanya mengatakan salah","D. menyerang identitas","E. tidak memberi bukti"],0,"Kritik konstruktif membantu perbaikan."],
+ ["Respons “Saya tidak setuju karena data pada paragraf kedua menunjukkan…” termasuk …",["A. tanggapan beralasan","B. serangan pribadi","C. pujian kosong","D. ringkasan","E. salam"],0,"Ketidaksetujuan disertai alasan berbasis teks."],
+ ["Kalimat kritik paling tepat adalah …",["A. Argumen ini perlu diperkuat dengan data tambahan agar kesimpulannya lebih meyakinkan.","B. Penulisnya tidak pintar.","C. Tulisan ini jelek banget.","D. Saya benci pendapat ini.","E. Tidak usah dibaca."],0,"Kritik A berfokus pada argumen dan menawarkan arah perbaikan."],
+ ["Respons yang tidak relevan adalah …",["A. membahas warna sampul ketika diminta menilai kekuatan argumen","B. membahas bukti","C. menilai logika","D. menguji data","E. memberi saran"],0,"Respons harus sesuai aspek yang sedang dinilai."],
+ ["Tanggapan terhadap pendapat berbeda sebaiknya menggunakan bahasa …",["A. sopan dan argumentatif","B. menghina","C. merendahkan","D. mengancam","E. mengejek"],0,"Kesopanan membantu menjaga diskusi tetap produktif."],
+ ["Jika setuju terhadap sebuah gagasan, tanggapan yang kuat adalah …",["A. menyatakan persetujuan dan alasan pendukung","B. hanya berkata iya","C. mengubah topik","D. menyerang lawan","E. mengulang judul"],0,"Persetujuan menjadi lebih kuat jika disertai alasan."],
+ ["Kritik terhadap data sebaiknya memeriksa …",["A. sumber, metode, dan relevansi data","B. nama penulis saja","C. panjang judul","D. warna grafik","E. jumlah halaman saja"],0,"Kualitas data dipengaruhi sumber dan cara memperolehnya."],
+ ["Kalimat “Pendapatmu salah karena kamu tidak pintar” merupakan …",["A. serangan pribadi","B. kritik terhadap argumen","C. bukti","D. tanggapan objektif","E. analisis data"],0,"Kalimat menyerang orang, bukan isi argumen."],
+ ["Respons terbaik terhadap kritik adalah …",["A. memahami alasan kritik lalu memperbaiki bagian yang memang lemah","B. langsung marah","C. menghapus semua pendapat","D. menyerang balik","E. mengabaikan bukti"],0,"Respons terbuka terhadap alasan kritik dapat menghasilkan perbaikan."]
+],
+Q:[
+ ["Rumusan masalah penelitian sebaiknya berbentuk …",["A. pertanyaan yang jelas dan sesuai fokus","B. slogan","C. pernyataan acak","D. pujian","E. kesimpulan akhir"],0,"Rumusan masalah memandu hal yang akan diteliti."],
+ ["Usulan pemecahan masalah yang baik harus …",["A. terkait langsung dengan masalah dan didukung alasan","B. tidak terkait","C. hanya berupa keluhan","D. tanpa pertimbangan","E. selalu mahal"],0,"Solusi harus menjawab masalah yang dirumuskan."],
+ ["Masalah “minat baca rendah” dapat dirumuskan menjadi …",["A. Bagaimana strategi meningkatkan minat baca siswa?","B. Minat baca sangat bagus.","C. Buku itu berwarna biru.","D. Semua siswa membaca.","E. Sekolah adalah tempat belajar."],0,"Pilihan A berbentuk pertanyaan penelitian yang sesuai fokus."],
+ ["Usulan yang paling relevan untuk masalah akses perpustakaan adalah …",["A. memperluas jam layanan dan memperbaiki akses menuju perpustakaan","B. mengganti seragam","C. menambah lomba olahraga","D. mengecat pagar saja","E. mengubah nama sekolah"],0,"Solusi A langsung menanggapi hambatan akses."],
+ ["Perumusan masalah harus menghindari pertanyaan yang …",["A. terlalu luas dan tidak terukur","B. jelas","C. fokus","D. relevan","E. dapat diteliti"],0,"Pertanyaan yang terlalu luas sulit diteliti secara terarah."],
+ ["Jika masalahnya adalah sampah plastik di sekolah, solusi paling komprehensif adalah …",["A. menggabungkan pengurangan plastik, fasilitas pemilahan, dan edukasi","B. melarang tanpa fasilitas","C. hanya memasang poster","D. hanya menambah tempat sampah tanpa edukasi","E. mengabaikan perilaku"],0,"Solusi terpadu menangani perilaku, sistem, dan fasilitas."],
+ ["Dalam teks akademik, usulan harus didukung …",["A. alasan dan bukti yang relevan","B. emosi saja","C. rumor","D. serangan pribadi","E. klaim mutlak"],0,"Usulan akademik perlu argumentasi."],
+ ["Hubungan masalah dan solusi harus …",["A. logis dan langsung","B. acak","C. berlawanan tanpa alasan","D. tidak berhubungan","E. hanya berdasarkan selera"],0,"Solusi harus menjawab penyebab atau kebutuhan yang terkait masalah."],
+ ["Jika rumusan masalah menanyakan efektivitas program, data yang relevan adalah …",["A. data hasil sebelum dan sesudah atau indikator efektivitas","B. warna poster","C. jumlah meja","D. nama ketua kelas","E. ukuran gedung"],0,"Data harus mengukur aspek yang ditanyakan."],
+ ["Kesimpulan pemecahan masalah sebaiknya …",["A. menyatakan solusi yang paling didukung analisis dan bukti","B. memperkenalkan masalah baru tanpa alasan","C. menyerang pihak tertentu","D. mengabaikan data","E. selalu menyatakan solusi sempurna"],0,"Kesimpulan harus mengikuti hasil analisis dan bukti."]
+]
+  };
+
+  // Map each section to its topic name from the existing DB.
+  const topics={};
+  DB.questions.forEach(q=>topics[q.section]=q.topic);
+
+  Object.entries(data).forEach(([sec,pool])=>{
+    for(let li=0;li<levels.length;li++){
+      // Nine additional questions per level; vary wording/context while
+      // preserving the same assessed skill.
+      for(let n=0;n<9;n++){
+        const base=pool[(li*9+n)%pool.length];
+        let [q,opts,ans,exp]=base;
+        const variants=[
+          q,
+          q.replace(/^/,`Perhatikan konteks berikut. `),
+          q.replace(/adalah|adalah …/g, 'yang paling tepat adalah …'),
+          q.replace(/^/,`Dalam latihan TKA, `),
+          q.replace(/^/,`Berdasarkan informasi tersebut, `),
+          q.replace(/^/,`Jika ditinjau dari kaidah bahasa, `),
+          q.replace(/^/,`Untuk menilai pernyataan berikut, `),
+          q.replace(/^/,`Dalam sebuah teks, `),
+          q.replace(/^/,`Secara analitis, `)
+        ];
+        const qq=variants[n%variants.length];
+        add(sec,topics[sec],levels[li],qq,opts,ans,exp);
+      }
+    }
+  });
+
+  DB.questions.push(...extra);
+  // Update the visible count and progress baseline.
+  const badge=document.querySelector('.badges .badge:nth-child(2)');
+  if(badge) badge.textContent=`${DB.questions.length} Soal`;
+  const progressText=document.getElementById('progressText');
+  if(progressText) progressText.textContent=`0 / ${DB.questions.length}`;
+})();
+
+init();
+</script>
+</body>
+</html>
